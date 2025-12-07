@@ -1,0 +1,29 @@
+/* Global Styles */
+body {
+  background-color: #fdfbf7;
+  color: #1a1a1a;
+}
+
+/* Custom Scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fdfbf7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+/* Utility classes for selection color */
+::selection {
+  background-color: #1a1a1a;
+  color: #fdfbf7;
+}
