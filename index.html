@@ -53,6 +53,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 Home
             </a>
+            <a href="#supported-hardware" class="text-ink-black font-semibold hover:text-gray-600 transition-colors">
+                Supported Devices
+            </a>
           </div>
 
           <!-- Mobile Menu Button -->
@@ -70,6 +73,10 @@
           <a href="#" class="block px-3 py-2 text-ink-black font-bold text-lg hover:bg-gray-100 rounded flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Home
+          </a>
+          <a href="#supported-hardware" class="block px-3 py-2 text-ink-black font-bold text-lg hover:bg-gray-100 rounded flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            Supported Devices
           </a>
         </div>
       </div>
@@ -319,6 +326,144 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- Supported Devices Section -->
+    <section id="supported-hardware" class="py-24 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-ink-black mb-4">Supported Devices</h2>
+          <div class="w-24 h-2 bg-ink-black mx-auto mb-8"></div>
+          <p class="text-xl text-gray-500 max-w-3xl mx-auto">
+            Our open-source drivers are tested and verified on development boards, single board computers, and industrial platforms from leading vendors worldwide.
+          </p>
+        </div>
+
+        <div class="space-y-12">
+
+          <!-- Raspberry Pi -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Raspberry+Pi" alt="Raspberry Pi" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">Raspberry Pi</h3>
+                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi 5</span>
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi 2B</span>
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi Zero 2W</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NXP -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=NXP" alt="NXP" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">NXP Platforms</h3>
+                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">ADLINK LEC-IMX95 (IMX95)</span>
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">FRDM-IMX93 EVK (IMX93)</span>
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Mayqueen PANZER-PLUS (IMX8MP)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Renesas -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Renesas" alt="Renesas" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">Renesas Platforms</h3>
+                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">ユリ電気 KAKIP (RZ/V2H)</span>
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">RZ/T2H EVK (RZ/T2H)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Telechips -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Telechips" alt="Telechips" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">Telechips Platforms</h3>
+                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">TOPST (D3-G)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rockchip -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Rockchip" alt="Rockchip" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">Rockchip Platform</h3>
+                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Mayqueen CUBE-RK3588 (RK3588)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STMicroelectronics -->
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                <img src="https://placehold.co/200x200/e5e5e5/333333?text=STMicro" alt="STMicroelectronics" class="w-24 h-24 rounded-xl object-cover">
+              </div>
+              <div class="flex-1 p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <h3 class="text-2xl font-bold text-ink-black">STMicroelectronics</h3>
+                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">STM32F1 series EVK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call-to-action -->
+        <div class="mt-16 text-center">
+          <p class="text-gray-500 mb-4">Don't see your board? We welcome community contributions!</p>
+          <a href="https://github.com/open-ep" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-paper-white font-bold rounded-lg hover:bg-gray-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            Contribute on GitHub
+          </a>
         </div>
       </div>
     </section>
