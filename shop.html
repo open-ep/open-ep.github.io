@@ -546,13 +546,6 @@
         document.getElementById('success-modal').classList.remove('flex');
       };
 
-      // --- Mobile Menu ---
-      const menuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-      }
-
       // Close cart on Escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
