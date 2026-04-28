@@ -183,37 +183,46 @@
           <article id="fns" class="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
             <div class="flex flex-col lg:flex-row">
 
-              <!-- Image / Logo Area — FNS brand style -->
-              <div class="lg:w-80 xl:w-96 flex-shrink-0 flex flex-col items-center justify-center p-10 gap-6 min-h-[300px] relative overflow-hidden" style="background: #e8f0f8;">
+              <!-- Image / Logo Area — FNS × MNS co-brand -->
+              <div class="lg:w-80 xl:w-96 flex-shrink-0 flex flex-col items-center justify-center p-10 gap-5 min-h-[300px] relative overflow-hidden" style="background: #e8f0f8;">
                 <!-- Blue accent bar on top -->
                 <div class="absolute top-0 left-0 right-0 h-1" style="background: #003082;"></div>
 
                 <!-- FNS logo -->
                 <img
                   src="https://futurenetworkservices.nl/publish/pages/4945/fns-logo-compact-rgb-medium_1.png"
-                  alt="FNS Logo"
-                  class="w-48 h-auto object-contain"
+                  alt="Future Network Services Logo"
+                  class="w-44 h-auto object-contain"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 >
-                <!-- Fallback text logo -->
+                <!-- Fallback -->
                 <div style="display:none; font-size:1.8rem; font-weight:900; color:#003082; letter-spacing:-1px;" class="items-center justify-center">
                   FNS
                 </div>
 
-                <!-- FNS decorative panel -->
-                <div class="w-full rounded-xl overflow-hidden border border-blue-100 shadow-sm">
-                  <img
-                    src="https://futurenetworkservices.nl/publish/pages/9775/220px/fase_2_website_klein_1.jpg"
-                    alt="Future Network Services"
-                    class="w-full h-auto object-cover opacity-80"
-                    onerror="this.parentElement.style.display='none';"
-                  >
+                <!-- Collaboration divider -->
+                <div class="flex items-center gap-3 w-full px-2">
+                  <div class="flex-1 h-px bg-blue-200"></div>
+                  <span class="text-sm font-bold text-blue-300">×</span>
+                  <div class="flex-1 h-px bg-blue-200"></div>
                 </div>
 
-                <!-- Funded by badge -->
+                <!-- MNS logo -->
+                <div class="px-6 py-3">
+                  <img
+                    src="https://mns-research.nl/images/logo_hua931301caa9e2c039e68fbb874deb22a_17897_0x70_resize_lanczos_3.png"
+                    alt="MNS Research Logo"
+                    class="h-8 w-auto object-contain"
+                    style="mix-blend-mode: multiply;"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                  >
+                  <span style="display:none; font-size:1rem; font-weight:900; color:#7a0000;">MNS</span>
+                </div>
+
+                <!-- Badge -->
                 <div class="text-center">
-                  <p class="text-xs uppercase tracking-widest font-semibold" style="color:#003082;">Funded by</p>
-                  <p class="font-bold text-sm mt-1 text-gray-700">National Growth Fund</p>
+                  <p class="text-xs uppercase tracking-widest font-semibold" style="color:#003082;">In collaboration with</p>
+                  <p class="font-bold text-sm mt-1 text-gray-700">University of Amsterdam</p>
                 </div>
               </div>
 
