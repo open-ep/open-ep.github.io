@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSC-Nagoya 2026 | Open-EP</title>
+  <meta name="description" content="Open-EP at Open Source Conference 2026 Nagoya — E-paper Linux kernel integration and CRA compliance.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --orange: #FF6B00;
+      --cyan: #00D4FF;
+      --bg: #04040F;
+      --card: rgba(255,255,255,0.04);
+    }
+
+    body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Starfield ── */
+    #stars-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ── Glow helpers ── */
+    .glow-orange { text-shadow: 0 0 20px rgba(255,107,0,0.8), 0 0 60px rgba(255,107,0,0.4); }
+    .glow-cyan   { text-shadow: 0 0 20px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.3); }
+    .border-glow-orange { box-shadow: 0 0 20px rgba(255,107,0,0.3), inset 0 0 20px rgba(255,107,0,0.05); }
+    .border-glow-cyan   { box-shadow: 0 0 20px rgba(0,212,255,0.2), inset 0 0 20px rgba(0,212,255,0.03); }
+
+    /* ── Gradient text ── */
+    .gradient-text {
+      background: linear-gradient(135deg, #FF6B00 0%, #FFa040 40%, #00D4FF 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── Grid bg overlay ── */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,107,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,107,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Scan line effect on hero ── */
+    .scanlines::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ── Countdown ── */
+    .countdown-box {
+      background: rgba(255,107,0,0.06);
+      border: 1px solid rgba(255,107,0,0.25);
+      border-radius: 12px;
+      min-width: 80px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-size: 2.5rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(180deg, #FF6B00, #FF9A40);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .countdown-label { font-size: 0.65rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-top: 4px; }
+
+    /* ── Pulse badge ── */
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+      animation: pulse-anim 2s infinite;
+    }
+    @keyframes pulse-anim {
+      0%   { box-shadow: 0 0 0 0   rgba(34,197,94,0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0);   }
+      100% { box-shadow: 0 0 0 0   rgba(34,197,94,0);   }
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.35s; }
+    .reveal-delay-4 { transition-delay: 0.5s; }
+
+    /* ── Timeline track ── */
+    .timeline-track { border-left: 2px solid rgba(255,107,0,0.3); }
+    .timeline-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--orange); box-shadow: 0 0 12px rgba(255,107,0,0.8);
+      flex-shrink: 0; margin-left: -7px;
+    }
+
+    /* ── Hover lift ── */
+    .lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .lift:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,107,0,0.15); }
+
+    /* ── Glass card ── */
+    .glass {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+    }
+
+    /* ── Animated gradient border ── */
+    .grad-border {
+      position: relative;
+    }
+    .grad-border::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #FF6B00, transparent, #00D4FF, transparent, #FF6B00);
+      background-size: 300% 300%;
+      animation: grad-spin 4s linear infinite;
+      z-index: -1;
+    }
+    @keyframes grad-spin {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ── Tag chips ── */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-family: 'JetBrains Mono', monospace;
+      padding: 4px 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Scroll indicator bounce ── */
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+    .bounce-down { animation: bounce-down 1.8s ease-in-out infinite; }
+
+    /* ── Section divider ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,107,0,0.4), transparent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Starfield Canvas -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(4,4,15,0.8); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,107,0,0.12);">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <svg width="28" height="28" viewBox="0 0 100 100" fill="none" class="text-white">
+        <g transform="rotate(-5, 50, 50)">
+          <rect x="15" y="10" width="70" height="80" rx="8" stroke="currentColor" stroke-width="8" fill="none"/>
+          <path d="M 30 55 L 45 40 L 55 50 L 70 35" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+      <span class="font-bold text-sm text-white/80 group-hover:text-white transition-colors">← open-ep.org</span>
+    </a>
+    <a href="https://event.ospn.jp/osc2026-nagoya/" target="_blank"
+       class="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-[#FF6B00]/40 text-[#FF6B00] hover:bg-[#FF6B00]/10 transition-colors">
+      Official Event Site
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-16 grid-bg scanlines overflow-hidden">
+
+  <!-- Radial glow blobs -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(255,107,0,0.12) 0%, transparent 70%); filter: blur(60px);"></div>
+  <div class="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%); filter: blur(60px);"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto">
+
+    <!-- Live badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 text-green-400 text-xs font-bold uppercase tracking-widest mb-8">
+      <div class="pulse-dot"></div>
+      Upcoming · May 23, 2026
+    </div>
+
+    <!-- Event label -->
+    <p class="mono text-[#FF6B00]/70 text-sm tracking-[0.3em] uppercase mb-4">Open Source Conference</p>
+
+    <!-- Main title -->
+    <h1 class="font-black leading-none mb-6" style="font-size: clamp(3rem, 10vw, 7rem);">
+      <span class="gradient-text">OSC</span><br>
+      <span class="text-white">Nagoya</span><br>
+      <span style="color: rgba(255,255,255,0.25);">2026</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+      We're <span class="text-[#FF6B00] font-semibold">speaking</span> &amp; <span class="text-[#00D4FF] font-semibold">exhibiting</span> at Japan's premier open-source conference in Nagoya.
+    </p>
+
+    <!-- Countdown -->
+    <div class="flex items-center justify-center gap-3 mb-12 flex-wrap" id="countdown-wrap">
+      <div class="countdown-box">
+        <div class="countdown-num" id="cd-days">--</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <span class="text-[#FF6B00] text-2xl font-black">:</span>
+      <div class="countdown-box">
+        <div class="countdown-num" id="cd-hours">--</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <span class="text-[#FF6B00] text-2xl font-black">:</span>
+      <div class="countdown-box">
+        <div class="countdown-num" id="cd-mins">--</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <span class="text-[#FF6B00] text-2xl font-black">:</span>
+      <div class="countdown-box">
+        <div class="countdown-num" id="cd-secs">--</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="https://event.ospn.jp/osc2026-nagoya/session/2296957" target="_blank"
+         class="px-8 py-4 rounded-xl font-bold text-sm tracking-wide text-white flex items-center gap-2 border-glow-orange"
+         style="background: linear-gradient(135deg, #FF6B00, #FF9A40);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        Our Talk
+      </a>
+      <a href="https://event.ospn.jp/osc2026-nagoya/" target="_blank"
+         class="px-8 py-4 rounded-xl font-bold text-sm tracking-wide text-white/80 hover:text-white flex items-center gap-2 glass transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Event Website
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bounce-down text-white/30">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════
+     EVENT QUICK FACTS
+══════════════════════════════════════════════ -->
+<section class="py-20 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto">
+    <p class="mono text-[#FF6B00]/60 text-xs tracking-[0.3em] uppercase text-center mb-12 reveal">Event Info</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-1">
+        <div class="text-3xl mb-3">📅</div>
+        <div class="font-bold text-white text-sm">May 23, 2026</div>
+        <div class="text-white/40 text-xs mt-1">Saturday</div>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-2">
+        <div class="text-3xl mb-3">🕙</div>
+        <div class="font-bold text-white text-sm">10:00 – 18:00</div>
+        <div class="text-white/40 text-xs mt-1">Exhibits until 16:00</div>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-3">
+        <div class="text-3xl mb-3">📍</div>
+        <div class="font-bold text-white text-sm">Nagoya, Japan</div>
+        <div class="text-white/40 text-xs mt-1">Fukiage SME Hall 3F</div>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-4">
+        <div class="text-3xl mb-3">🎟️</div>
+        <div class="font-bold text-white text-sm">Free Entry</div>
+        <div class="text-white/40 text-xs mt-1">No registration needed</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════
+     THE TALK
+══════════════════════════════════════════════ -->
+<section class="py-24 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="flex items-center gap-3 mb-4 reveal">
+      <div style="width:3px; height:24px; background: #FF6B00; border-radius:2px; box-shadow: 0 0 12px rgba(255,107,0,0.8);"></div>
+      <p class="mono text-[#FF6B00] text-xs tracking-[0.3em] uppercase">Our Talk</p>
+    </div>
+
+    <h2 class="text-3xl md:text-5xl font-black text-white mb-8 leading-tight reveal reveal-delay-1">
+      Electronic Paper<br>
+      <span class="gradient-text">in the Linux Kernel</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- Session card (2/3 wide) -->
+      <div class="md:col-span-2 grad-border rounded-2xl reveal reveal-delay-2" style="border-radius: 20px;">
+        <div class="glass p-8 rounded-2xl h-full">
+          <h3 class="font-bold text-white text-lg mb-2 leading-snug">
+            "Electronic paper integration into Linux kernel — Open-EP community's OSS activities and CRA compliance approaches"
+          </h3>
+          <p class="text-white/40 text-xs mono mb-6">Session #2296957</p>
+
+          <!-- Timeline -->
+          <div class="space-y-6 pl-3 timeline-track">
+
+            <div class="flex items-start gap-4">
+              <div class="timeline-dot mt-1"></div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[#FF6B00] font-bold text-sm">Part 1</span>
+                  <span class="mono text-white/30 text-xs">25 min</span>
+                </div>
+                <p class="text-white/70 text-sm leading-relaxed">
+                  Open-EP: a Taiwan-based OSS community for embedded e-paper. Hardware drivers, multi-platform support (Renesas, NXP, Raspberry Pi), Linux kernel contributions via Device Tree &amp; DRM. Yocto, Ubuntu &amp; Android integration.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="timeline-dot mt-1" style="background: var(--cyan); box-shadow: 0 0 12px rgba(0,212,255,0.8);"></div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[#00D4FF] font-bold text-sm">Part 2</span>
+                  <span class="mono text-white/30 text-xs">20 min</span>
+                </div>
+                <p class="text-white/70 text-sm leading-relaxed">
+                  EU Cybersecurity Regulations &amp; CRA compliance. CI pipelines, vendor BSPs vs upstream Yocto strategies — using the e-paper project as a real-world case study for secure, regulation-ready embedded Linux.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2 mt-8">
+            <span class="tag">Linux Kernel</span>
+            <span class="tag">DRM Driver</span>
+            <span class="tag">E-Paper</span>
+            <span class="tag">Embedded</span>
+            <span class="tag">CRA / Compliance</span>
+            <span class="tag">Yocto</span>
+            <span class="tag">Open Source</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Speaker + meta -->
+      <div class="flex flex-col gap-4 reveal reveal-delay-3">
+
+        <!-- Speaker card -->
+        <div class="glass p-6 rounded-2xl">
+          <p class="mono text-white/30 text-xs uppercase tracking-widest mb-4">Speaker</p>
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#FF6B00]/40 flex-shrink-0 border-glow-orange">
+              <img src="imgs/wig.jpg" alt="Wig Cheng" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="font-bold text-white">Wig Cheng</div>
+              <div class="text-white/40 text-xs">Community Maintainer</div>
+              <div class="text-[#FF6B00] text-xs mt-0.5">Open-EP</div>
+            </div>
+          </div>
+          <p class="text-white/50 text-xs leading-relaxed">GitHub maintenance, connecting makers to build sustainable tech.</p>
+        </div>
+
+        <!-- Time card -->
+        <div class="glass p-6 rounded-2xl">
+          <p class="mono text-white/30 text-xs uppercase tracking-widest mb-3">When</p>
+          <div class="text-[#FF6B00] font-black text-2xl">13:00</div>
+          <div class="text-white/40 text-sm">– 13:45 JST</div>
+          <div class="text-white/25 text-xs mt-2">May 23, 2026</div>
+        </div>
+
+        <!-- Level card -->
+        <div class="glass p-6 rounded-2xl">
+          <p class="mono text-white/30 text-xs uppercase tracking-widest mb-3">Details</p>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-white/40">Level</span>
+              <span class="text-white/80">Introductory</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-white/40">Language</span>
+              <span class="text-white/80">English</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-white/40">Audience</span>
+              <span class="text-white/80">Linux devs</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt-8 text-center reveal">
+      <a href="https://event.ospn.jp/osc2026-nagoya/session/2296957" target="_blank"
+         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-[#FF6B00] border border-[#FF6B00]/30 hover:bg-[#FF6B00]/10 transition-colors">
+        View Full Session Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════
+     BOOTH
+══════════════════════════════════════════════ -->
+<section class="py-24 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="flex items-center gap-3 mb-4 reveal">
+      <div style="width:3px; height:24px; background: var(--cyan); border-radius:2px; box-shadow: 0 0 12px rgba(0,212,255,0.8);"></div>
+      <p class="mono text-[#00D4FF] text-xs tracking-[0.3em] uppercase">Find Us</p>
+    </div>
+
+    <h2 class="text-3xl md:text-5xl font-black text-white mb-12 reveal reveal-delay-1">
+      Visit Our <span class="glow-cyan" style="-webkit-text-fill-color: #00D4FF;">Booth</span>
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- Booth info -->
+      <div class="glass p-8 rounded-2xl reveal reveal-delay-2 lift">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="p-3 rounded-xl" style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="font-bold text-white">Open-EP Booth</div>
+            <div class="text-white/40 text-xs">Exhibition Floor</div>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm">
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" class="mt-0.5 flex-shrink-0"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div>
+              <div class="text-white/70">Nagoya SME Promotion Hall</div>
+              <div class="text-white/40 text-xs">3F · 2nd Fashion Exhibition Space</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" class="mt-0.5 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <div>
+              <div class="text-white/70">Exhibits open 10:00 – 16:00</div>
+              <div class="text-white/40 text-xs">Free to visit, no registration required</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" class="mt-0.5 flex-shrink-0"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <div>
+              <div class="text-white/70">Live demos &amp; hardware on display</div>
+              <div class="text-white/40 text-xs">Try our e-paper modules hands-on</div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://event.ospn.jp/files/booth_layout/26nagoya.pdf" target="_blank"
+           class="mt-6 flex items-center gap-2 text-xs text-[#00D4FF]/70 hover:text-[#00D4FF] transition-colors">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download booth layout map (PDF)
+        </a>
+      </div>
+
+      <!-- What to expect -->
+      <div class="glass p-8 rounded-2xl reveal reveal-delay-3 lift">
+        <p class="mono text-white/30 text-xs uppercase tracking-widest mb-6">What to expect</p>
+        <ul class="space-y-5">
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2);">🖥️</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Live E-Paper Demos</div>
+              <div class="text-white/40 text-xs mt-0.5">See PIXPAPER &amp; HIDAPI modules running in real time</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);">🐧</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Linux Kernel Integration</div>
+              <div class="text-white/40 text-xs mt-0.5">DRM driver, Device Tree, upstream kernel story</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2);">🤝</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Meet the Team</div>
+              <div class="text-white/40 text-xs mt-0.5">Chat with maintainers &amp; contributors in person</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);">📦</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Module Showcase</div>
+              <div class="text-white/40 text-xs mt-0.5">PIXPAPER-213-C/M, PIXPAPER-426-M</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════
+     ABOUT OSC
+══════════════════════════════════════════════ -->
+<section class="py-24 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="mono text-white/30 text-xs tracking-[0.3em] uppercase mb-4 reveal">About the Event</p>
+    <h2 class="text-2xl md:text-4xl font-black text-white mb-6 reveal reveal-delay-1">Open Source Conference Nagoya</h2>
+    <p class="text-white/50 max-w-2xl mx-auto leading-relaxed mb-8 reveal reveal-delay-2">
+      OSC Nagoya is one of Japan's longest-running open-source conferences, organized by OSPN. It brings together developers, communities, and companies to share the latest in open-source technology — free to attend, open to all.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3 reveal reveal-delay-3">
+      <span class="tag">#oscnagoya</span>
+      <span class="tag">Free &amp; Open</span>
+      <span class="tag">Japanese Maker Community</span>
+      <span class="tag">40+ Sponsor Organizations</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER CTA
+══════════════════════════════════════════════ -->
+<section class="py-20 px-6 relative z-10" style="background: linear-gradient(180deg, transparent, rgba(255,107,0,0.04));">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <p class="text-white/30 text-sm mb-2">Powered by open source</p>
+    <h2 class="text-3xl font-black text-white mb-8">
+      See you in <span class="gradient-text">Nagoya</span> 🇯🇵
+    </h2>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="https://event.ospn.jp/osc2026-nagoya/session/2296957" target="_blank"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white flex items-center gap-2"
+         style="background: linear-gradient(135deg, #FF6B00, #FF9A40);">
+        Session Page
+      </a>
+      <a href="https://github.com/open-ep" target="_blank"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white/70 hover:text-white glass transition-colors flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="index.html"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white/70 hover:text-white glass transition-colors">
+        ← Back to open-ep
+      </a>
+    </div>
+  </div>
+  <p class="text-center text-white/15 text-xs mt-12">&copy; 2026 Open E-Paper Community</p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════ -->
+<script>
+  /* ── Starfield ── */
+  (function() {
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function mkStar() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random(),
+        da: (Math.random() - 0.5) * 0.005,
+        vx: (Math.random() - 0.5) * 0.08,
+        vy: (Math.random() - 0.5) * 0.08,
+      };
+    }
+
+    function init() {
+      resize();
+      stars = Array.from({ length: 220 }, mkStar);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.x += s.vx; s.y += s.vy;
+        s.a += s.da;
+        if (s.a < 0) s.da = Math.abs(s.da);
+        if (s.a > 1) s.da = -Math.abs(s.da);
+        if (s.x < 0) s.x = W; if (s.x > W) s.x = 0;
+        if (s.y < 0) s.y = H; if (s.y > H) s.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.a * 0.6})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    draw();
+  })();
+
+  /* ── Countdown ── */
+  (function() {
+    const target = new Date('2026-05-23T10:00:00+09:00').getTime();
+    const els = {
+      d: document.getElementById('cd-days'),
+      h: document.getElementById('cd-hours'),
+      m: document.getElementById('cd-mins'),
+      s: document.getElementById('cd-secs'),
+    };
+
+    function pad(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        els.d.textContent = els.h.textContent = els.m.textContent = els.s.textContent = '00';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      els.d.textContent = pad(d);
+      els.h.textContent = pad(h);
+      els.m.textContent = pad(m);
+      els.s.textContent = pad(s);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  /* ── Scroll reveal ── */
+  (function() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  })();
+</script>
+</body>
+</html>
