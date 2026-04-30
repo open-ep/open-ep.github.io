@@ -243,11 +243,28 @@
                 </p>
 
                 <div class="flex flex-wrap gap-3">
-                  <a href="#" class="inline-flex items-center gap-2 px-5 py-2.5 bg-ink-black text-paper-white font-bold rounded-lg cursor-not-allowed opacity-60 text-sm">
+                  <a href="https://arxiv.org/abs/2604.26508" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-ink-black text-paper-white font-bold rounded-lg hover:bg-gray-800 transition-colors text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    Visit Paper (Coming Soon)
+                    Visit Paper (arXiv)
                   </a>
                 </div>
+
+                <!-- Podcast Player -->
+                <div class="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                  <div class="flex items-center gap-2 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Podcast</span>
+                  </div>
+                  <div class="flex gap-2 mb-4">
+                    <button id="fns-tab-en" onclick="fnsSwitchLang('en')" class="px-4 py-1.5 rounded-full text-sm font-bold transition-colors bg-ink-black text-white">English</button>
+                    <button id="fns-tab-zh" onclick="fnsSwitchLang('zh')" class="px-4 py-1.5 rounded-full text-sm font-bold transition-colors bg-gray-200 text-gray-500 hover:bg-gray-300">Mandarin</button>
+                    <button id="fns-tab-ja" onclick="fnsSwitchLang('ja')" class="px-4 py-1.5 rounded-full text-sm font-bold transition-colors bg-gray-200 text-gray-500 hover:bg-gray-300">Japanese</button>
+                  </div>
+                  <audio id="fns-podcast" controls class="w-full rounded-lg">
+                    <source id="fns-podcast-src" src="https://github.com/open-ep/ProSemComVLM/releases/download/podcast-v1/ProSemComVLM_podcast-english.mpeg" type="audio/mpeg">
+                  </audio>
+                </div>
+
               </div>
             </div>
           </article>
@@ -311,5 +328,28 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    <script>
+      const fnsPodcastSrc = {
+        en: 'https://github.com/open-ep/ProSemComVLM/releases/download/podcast-v1/ProSemComVLM_podcast-english.mpeg',
+        zh: 'https://github.com/open-ep/ProSemComVLM/releases/download/podcast-v1/ProSemComVLM_podcast-mandarin.mpeg',
+        ja: 'https://github.com/open-ep/ProSemComVLM/releases/download/podcast-v1/ProSemComVLM_podcast-japanese.mpeg'
+      };
+      function fnsSwitchLang(lang) {
+        const audio = document.getElementById('fns-podcast');
+        const src = document.getElementById('fns-podcast-src');
+        src.src = fnsPodcastSrc[lang];
+        audio.load();
+        ['en', 'zh', 'ja'].forEach(function(l) {
+          const tab = document.getElementById('fns-tab-' + l);
+          if (l === lang) {
+            tab.classList.add('bg-ink-black', 'text-white');
+            tab.classList.remove('bg-gray-200', 'text-gray-500');
+          } else {
+            tab.classList.remove('bg-ink-black', 'text-white');
+            tab.classList.add('bg-gray-200', 'text-gray-500');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
