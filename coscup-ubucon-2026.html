@@ -157,23 +157,44 @@
     .act.text-right .act-content { margin-left: auto;  text-align: right; }
     .act.text-left  .act-content { margin-right: auto; text-align: left; }
 
-    /* ── Phones & portrait tablets: photo fills the card, text sits at the bottom ── */
+    /* ── Phones & portrait tablets ──────────────────────────────
+       Keep the desktop left/right ALTERNATING rhythm, but turn the
+       full-bleed photo band into a self-contained rounded portrait
+       pinned to one side, so faces are never sliced.            */
     @media (max-width: 820px) {
-      .act { min-height: 300px; align-items: flex-end; padding: 26px 22px; }
+      .act { min-height: 0; align-items: stretch; gap: 16px; padding: 20px 18px; }
+
+      /* photo: from absolute bleed-band → in-flow rounded thumbnail */
       .act-photo {
-        width: 100% !important; left: 0 !important; right: 0 !important;
-        background-size: cover !important;
-        background-position: center 25% !important;
+        position: relative !important;
+        top: auto !important; bottom: auto !important; left: auto !important; right: auto !important;
+        width: 40% !important; flex: 0 0 40%;
+        min-height: 175px;
+        border-radius: 16px;
         -webkit-mask-image: none !important; mask-image: none !important;
       }
-      /* bottom-weighted scrim: face visible up top, text readable below */
-      .act.text-right::before, .act.text-left::before {
-        background: linear-gradient(180deg, rgba(21,10,22,0.12) 0%, rgba(21,10,22,0.32) 45%, rgba(21,10,22,0.92) 100%) !important;
-      }
-      .act-content { width: 100% !important; margin: 0 !important; text-align: left !important; }
-      .act.text-right .act-content { text-align: left !important; }
-      .act-name { font-size: clamp(2rem, 10vw, 3.1rem); }
-      .act-title { font-size: 0.88rem; }
+      /* alternate the side via flex order (DOM order is photo → content) */
+      .act-photo   { order: 1; }
+      .act-content { order: 2; }
+      .act.text-left .act-photo   { order: 2; }
+      .act.text-left .act-content { order: 1; }
+
+      /* photo is self-contained now — drop the desktop side scrim */
+      .act.text-right::before, .act.text-left::before { display: none !important; }
+
+      /* text hugs its photo, mirroring left/right */
+      .act-content { width: auto !important; flex: 1 1 0; margin: 0 !important; min-width: 0; overflow: hidden; }
+      .act.text-right .act-content { text-align: left  !important; }
+      .act.text-left  .act-content { text-align: right !important; }
+      .act-name  { font-size: clamp(1.45rem, 6.4vw, 2.5rem); overflow-wrap: break-word; hyphens: auto; }
+      .act-title { font-size: 0.8rem; }
+      .act-mode  { margin-top: 10px; }
+    }
+    /* very narrow phones: give the photo a touch more room, shrink long names */
+    @media (max-width: 430px) {
+      .act-photo { width: 44% !important; flex-basis: 44%; min-height: 160px; }
+      .act { gap: 13px; padding: 18px 15px; }
+      .act-name { font-size: clamp(1.05rem, 4.8vw, 1.6rem); }
     }
 
     .act-time {
