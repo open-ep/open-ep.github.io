@@ -168,10 +168,16 @@
       .act-photo {
         position: relative !important;
         top: auto !important; bottom: auto !important; left: auto !important; right: auto !important;
-        width: 40% !important; flex: 0 0 40%;
-        min-height: 175px;
+        width: 45% !important; flex: 0 0 45%;
+        min-height: 210px;
         border-radius: 16px;
         -webkit-mask-image: none !important; mask-image: none !important;
+      }
+      /* Wig's shot is a wide landscape; its desktop 155% (width-only) size
+         left vertical gaps in a portrait thumb — refit to fill & frame him */
+      .act-photo.wig {
+        background-size: 360% !important;
+        background-position: 57% 5% !important;
       }
       /* alternate the side via flex order (DOM order is photo → content) */
       .act-photo   { order: 1; }
@@ -192,7 +198,7 @@
     }
     /* very narrow phones: give the photo a touch more room, shrink long names */
     @media (max-width: 430px) {
-      .act-photo { width: 44% !important; flex-basis: 44%; min-height: 160px; }
+      .act-photo { width: 49% !important; flex-basis: 49%; min-height: 190px; }
       .act { gap: 13px; padding: 18px 15px; }
       .act-name { font-size: clamp(1.05rem, 4.8vw, 1.6rem); }
     }
@@ -399,7 +405,7 @@
 
       <!-- ACT 1 — Wig Cheng -->
       <div class="act text-right" style="--tint:#FF2E88;">
-        <div class="act-photo left" style="background-image:url('imgs/wig.jpg'); --tint:#FFB454; background-size:155%; background-position:82% 12%;"></div>
+        <div class="act-photo left wig" style="background-image:url('imgs/wig.jpg'); --tint:#FFB454; background-size:155%; background-position:82% 12%;"></div>
         <div class="act-content">
           <div class="act-time text-[#FF2E88]">13:30 · 30 min</div>
           <div class="act-name">Wig Cheng</div>
