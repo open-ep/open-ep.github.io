@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COSCUP × UBUCON Asia 2026 | Open-EP</title>
+  <meta name="description" content="The Open-EP (E-Paper) Community track at COSCUP × UBUCON Asia 2026 in Taipei — six talks spanning mainline kernel, DRM drivers, ESP32, Zephyr, Rust and agentic AI.">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --magenta: #FF2E88;
+      --violet:  #A855F7;
+      --gold:    #FFB454;
+      --bg:      #150A16;
+      --card:    rgba(255,255,255,0.04);
+    }
+
+    body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Floating gradient mesh background ── */
+    #mesh-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    /* ── Glow helpers ── */
+    .glow-magenta { text-shadow: 0 0 20px rgba(255,46,136,0.8), 0 0 60px rgba(255,46,136,0.4); }
+    .glow-gold    { text-shadow: 0 0 20px rgba(255,180,84,0.8), 0 0 60px rgba(255,180,84,0.3); }
+    .border-glow-magenta { box-shadow: 0 0 20px rgba(255,46,136,0.3), inset 0 0 20px rgba(255,46,136,0.05); }
+
+    /* ── Gradient text ── */
+    .gradient-text {
+      background: linear-gradient(135deg, #FF2E88 0%, #A855F7 50%, #FFB454 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── Dot grid overlay ── */
+    .dot-grid {
+      background-image: radial-gradient(rgba(255,46,136,0.10) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ── Countdown ── */
+    .countdown-box {
+      background: rgba(255,46,136,0.06);
+      border: 1px solid rgba(255,46,136,0.25);
+      border-radius: 12px;
+      min-width: 80px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-size: 2.5rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(180deg, #FF2E88, #FFB454);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .countdown-label { font-size: 0.65rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-top: 4px; }
+
+    /* ── Pulse badge ── */
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+      animation: pulse-anim 2s infinite;
+    }
+    @keyframes pulse-anim {
+      0%   { box-shadow: 0 0 0 0   rgba(34,197,94,0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0);   }
+      100% { box-shadow: 0 0 0 0   rgba(34,197,94,0);   }
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.35s; }
+    .reveal-delay-4 { transition-delay: 0.5s; }
+
+    /* ── Glass card ── */
+    .glass {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+    }
+
+    /* ── Hover lift ── */
+    .lift { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .lift:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,46,136,0.18); }
+
+    /* ── Tag chips ── */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;
+      padding: 3px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Scroll indicator bounce ── */
+    @keyframes bounce-down { 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+    .bounce-down { animation: bounce-down 1.8s ease-in-out infinite; }
+
+    /* ── Divider ── */
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,46,136,0.4), transparent); }
+
+    /* ════════════════════════════════════════════
+       FESTIVAL LINEUP  (poster style)
+    ════════════════════════════════════════════ */
+    .lineup { position: relative; }
+
+    .act {
+      position: relative;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      padding: 34px 28px;
+      overflow: hidden;
+    }
+
+    /* Photo bleeding in from one side */
+    .act-photo {
+      position: absolute; top: 0; bottom: 0; width: 56%;
+      background-size: cover; background-position: center 22%; background-repeat: no-repeat;
+      filter: grayscale(0.4) contrast(1.05) brightness(0.85);
+      z-index: 0;
+    }
+    .act-photo::after {
+      content: ''; position: absolute; inset: 0;
+      background: var(--tint, #FF2E88);
+      mix-blend-mode: overlay; opacity: 0.4;
+    }
+    .act-photo.left {
+      left: 0;
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 92%);
+              mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 92%);
+    }
+    .act-photo.right {
+      right: 0;
+      -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 30%, transparent 92%);
+              mask-image: linear-gradient(270deg, #000 0%, #000 30%, transparent 92%);
+    }
+    /* Original photo, no filter or color tint */
+    .act-photo.plain { filter: none; }
+    .act-photo.plain::after { display: none; }
+
+    /* Side scrim — darkens only the text side, keeps the photo side visible */
+    .act.text-right::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to left, rgba(21,10,22,0.94) 32%, rgba(21,10,22,0.45) 62%, transparent 96%);
+    }
+    .act.text-left::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, rgba(21,10,22,0.94) 32%, rgba(21,10,22,0.45) 62%, transparent 96%);
+    }
+
+    .act-content { position: relative; z-index: 2; width: 62%; }
+    .act.text-right .act-content { margin-left: auto;  text-align: right; }
+    .act.text-left  .act-content { margin-right: auto; text-align: left; }
+
+    /* ── Phones & portrait tablets: photo fills the card, text sits at the bottom ── */
+    @media (max-width: 820px) {
+      .act { min-height: 300px; align-items: flex-end; padding: 26px 22px; }
+      .act-photo {
+        width: 100% !important; left: 0 !important; right: 0 !important;
+        background-size: cover !important;
+        background-position: center 25% !important;
+        -webkit-mask-image: none !important; mask-image: none !important;
+      }
+      /* bottom-weighted scrim: face visible up top, text readable below */
+      .act.text-right::before, .act.text-left::before {
+        background: linear-gradient(180deg, rgba(21,10,22,0.12) 0%, rgba(21,10,22,0.32) 45%, rgba(21,10,22,0.92) 100%) !important;
+      }
+      .act-content { width: 100% !important; margin: 0 !important; text-align: left !important; }
+      .act.text-right .act-content { text-align: left !important; }
+      .act-name { font-size: clamp(2rem, 10vw, 3.1rem); }
+      .act-title { font-size: 0.88rem; }
+    }
+
+    .act-time {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .act-name {
+      font-family: 'Anton', sans-serif; font-weight: 400;
+      font-size: clamp(2.1rem, 7vw, 4.5rem); line-height: 0.92;
+      text-transform: uppercase; letter-spacing: 0.01em; color: #fff;
+      text-shadow: 0 2px 30px rgba(0,0,0,0.7);
+    }
+    .act-role {
+      margin-top: 8px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.18em;
+    }
+    .act-title {
+      margin-top: 12px; max-width: 100%; line-height: 1.45;
+      font-size: 0.92rem; color: rgba(255,255,255,0.7);
+    }
+    /* Talk title acts as a (soon-to-be) link to its COSCUP session page */
+    .act-link {
+      color: rgba(255,255,255,0.78); cursor: pointer; text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.3);
+      transition: color .2s ease, border-color .2s ease;
+    }
+    .act-link:hover { color: #fff; border-bottom-color: var(--tint, #FF2E88); }
+    .act-link::after {
+      content: '↗'; font-size: 0.8em; margin-left: 5px;
+      color: var(--tint, #FF2E88); opacity: 0.85;
+    }
+    /* In-person / Remote mode badge */
+    .act-mode {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 14px; padding: 4px 11px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      border: 1px solid rgba(255,180,84,0.4); color: rgba(255,180,84,0.95);
+      background: rgba(255,180,84,0.08);
+    }
+    .act-mode.remote {
+      border-color: rgba(168,85,247,0.45); color: rgba(192,132,252,0.95);
+      background: rgba(168,85,247,0.1);
+    }
+
+    /* Glowing laser-beam divider */
+    .beam { position: relative; height: 30px; }
+    .beam::before {
+      content: ''; position: absolute; left: 4%; right: 4%; top: 50%; height: 4px;
+      transform: translateY(-50%); border-radius: 999px;
+      background: linear-gradient(90deg, transparent, #FF2E88 18%, #A855F7 50%, #FFB454 82%, transparent);
+      box-shadow: 0 0 14px rgba(168,85,247,0.7), 0 0 44px rgba(255,46,136,0.4);
+    }
+    .beam::after {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px;
+      border-radius: 50%; transform: translate(-50%,-50%); background: #fff;
+      box-shadow: 0 0 14px #fff, 0 0 30px #A855F7;
+    }
+
+    .avatar { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  </style>
+  <script data-goatcounter="https://wigcheng.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+<!-- Mesh Canvas -->
+<canvas id="mesh-canvas"></canvas>
+
+<!-- ══════════════════════════════════════════════ NAV ══════════════════════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(21,10,22,0.8); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,46,136,0.14);">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <svg width="28" height="28" viewBox="0 0 100 100" fill="none" class="text-white">
+        <g transform="rotate(-5, 50, 50)">
+          <rect x="15" y="10" width="70" height="80" rx="8" stroke="currentColor" stroke-width="8" fill="none"/>
+          <path d="M 30 55 L 45 40 L 55 50 L 70 35" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+      <span class="font-bold text-sm text-white/80 group-hover:text-white transition-colors">← open-ep.org</span>
+    </a>
+    <a href="https://coscup.org/2026/" target="_blank"
+       class="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-[#FF2E88]/40 text-[#FF2E88] hover:bg-[#FF2E88]/10 transition-colors">
+      Official Event Site
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════ HERO ══════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-16 dot-grid overflow-hidden">
+
+  <!-- Radial glow blobs -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(255,46,136,0.13) 0%, transparent 70%); filter: blur(60px);"></div>
+  <div class="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%); filter: blur(60px);"></div>
+  <div class="absolute top-1/2 right-1/3 w-72 h-72 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(255,180,84,0.08) 0%, transparent 70%); filter: blur(60px);"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto">
+
+    <!-- Live badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 text-green-400 text-xs font-bold uppercase tracking-widest mb-8">
+      <div class="pulse-dot"></div>
+      Upcoming · Aug 8–9, 2026
+    </div>
+
+    <!-- Event label -->
+    <p class="mono text-[#FF2E88]/70 text-sm tracking-[0.3em] uppercase mb-4">Open-EP E-Paper Track</p>
+
+    <!-- Main title -->
+    <h1 class="font-black leading-none mb-6" style="font-size: clamp(2.4rem, 8vw, 6rem);">
+      <span class="gradient-text">COSCUP</span>
+      <span class="text-white/30 font-light px-1">×</span>
+      <span class="text-white">UBUCON</span><br>
+      <span class="text-white">Asia</span>
+      <span style="color: rgba(255,255,255,0.25);">2026</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-white/50 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+      A full <span class="text-[#FF2E88] font-semibold">Open-EP (E-Paper) Community</span> track —
+      <span class="text-[#FFB454] font-semibold">six talks</span> on mainline kernel, DRM drivers, ESP32, Zephyr, Rust &amp; agentic AI.
+    </p>
+
+    <!-- Countdown -->
+    <div class="flex items-center justify-center gap-3 mb-12 flex-wrap" id="countdown-wrap">
+      <div class="countdown-box"><div class="countdown-num" id="cd-days">--</div><div class="countdown-label">Days</div></div>
+      <span class="text-[#FF2E88] text-2xl font-black">:</span>
+      <div class="countdown-box"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-label">Hours</div></div>
+      <span class="text-[#FF2E88] text-2xl font-black">:</span>
+      <div class="countdown-box"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-label">Minutes</div></div>
+      <span class="text-[#FF2E88] text-2xl font-black">:</span>
+      <div class="countdown-box"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-label">Seconds</div></div>
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#schedule"
+         class="px-8 py-4 rounded-xl font-bold text-sm tracking-wide text-white flex items-center gap-2 border-glow-magenta"
+         style="background: linear-gradient(135deg, #FF2E88, #A855F7);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        View Lineup
+      </a>
+      <a href="https://coscup.org/2026/" target="_blank"
+         class="px-8 py-4 rounded-xl font-bold text-sm tracking-wide text-white/80 hover:text-white flex items-center gap-2 glass transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Event Website
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bounce-down text-white/30">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════ QUICK FACTS ══════════════════════════════════════════════ -->
+<section class="py-20 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto">
+    <p class="mono text-[#FF2E88]/60 text-xs tracking-[0.3em] uppercase text-center mb-12 reveal">Event Info</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-1">
+        <div class="text-3xl mb-3">📅</div>
+        <div class="font-bold text-white text-sm">Aug 8–9, 2026</div>
+        <div class="text-white/40 text-xs mt-1">Sat – Sun</div>
+      </div>
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-2">
+        <div class="text-3xl mb-3">🕐</div>
+        <div class="font-bold text-white text-sm">13:30 – 16:40</div>
+        <div class="text-white/40 text-xs mt-1">Open-EP Track</div>
+      </div>
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-3">
+        <div class="text-3xl mb-3">📍</div>
+        <div class="font-bold text-white text-sm">NTUST · Room TR211</div>
+        <div class="text-white/40 text-xs mt-1">Da'an, Taipei</div>
+      </div>
+      <div class="glass p-6 rounded-2xl text-center lift reveal reveal-delay-4">
+        <div class="text-3xl mb-3">🎟️</div>
+        <div class="font-bold text-white text-sm">Free Entry</div>
+        <div class="text-white/40 text-xs mt-1">Registration opens later</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════ LINEUP ══════════════════════════════════════════════ -->
+<section id="schedule" class="py-24 px-4 relative z-10 scroll-mt-20">
+  <div class="max-w-4xl mx-auto">
+
+    <p class="mono text-center text-[#FF2E88]/70 text-xs tracking-[0.4em] uppercase mb-3 reveal">In Order of Appearance</p>
+    <h2 class="text-center text-3xl md:text-5xl font-black text-white mb-4 reveal reveal-delay-1">
+      Open-EP <span class="gradient-text">E-Paper</span> Track
+    </h2>
+    <p class="text-center text-white/40 text-sm mb-12 reveal reveal-delay-2">
+      Each talk title will link to its session page on COSCUP <span class="text-white/30">— pages coming soon</span>
+    </p>
+
+    <div class="lineup glass reveal reveal-delay-1" style="border-radius: 24px; overflow: hidden;">
+
+      <!-- ACT 1 — Wig Cheng -->
+      <div class="act text-right" style="--tint:#FF2E88;">
+        <div class="act-photo left" style="background-image:url('imgs/wig.jpg'); --tint:#FFB454; background-size:155%; background-position:82% 12%;"></div>
+        <div class="act-content">
+          <div class="act-time text-[#FF2E88]">13:30 · 30 min</div>
+          <div class="act-name">Wig Cheng</div>
+          <div class="act-role">Community Maintainer · Open-EP</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">open-ep: From Hardware Design to the Mainline Kernel — a community's complete open-source journey</a></div>
+          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+        </div>
+      </div>
+
+      <div class="beam"></div>
+
+      <!-- ACT 2 — LC Wang -->
+      <div class="act text-left" style="--tint:#A855F7;">
+        <div class="act-photo right" style="background-image:url('imgs/lc.jpg'); width:28%; right:5%; -webkit-mask-image: none; mask-image: none; --tint:#FFB454;"></div>
+        <div class="act-content">
+          <div class="act-time text-[#A855F7]">14:00 · 40 min</div>
+          <div class="act-name">LC Wang</div>
+          <div class="act-role">DRM Maintainer · Open-EP</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">From SPI Display Panel to Android Screen: a DRM display-driver integration journey on ARM64</a></div>
+          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+        </div>
+      </div>
+
+      <div class="beam"></div>
+
+      <!-- ACT 3 — ChengRuei Tsai -->
+      <div class="act text-right" style="--tint:#FFB454;">
+        <div class="act-photo left" style="background-image:url('imgs/cr.jpg'); --tint:#FFB454; background-size:210%; background-position:100% 10%;"></div>
+        <div class="act-content">
+          <div class="act-time text-[#FFB454]">14:40 · 30 min</div>
+          <div class="act-name">ChengRuei Tsai</div>
+          <div class="act-role">Hardware &amp; Firmware Lead · Open-EP</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">Decoding E-Paper Drivers: cross-model HAL design &amp; grayscale waveform implementation</a></div>
+          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+        </div>
+      </div>
+
+      <div class="beam"></div>
+
+      <!-- ACT 4 — Leon Anavi -->
+      <div class="act text-left" style="--tint:#FF2E88;">
+        <div class="act-photo right" style="background-image:url('imgs/leon.jpg'); width:28%; right:5%; -webkit-mask-image: none; mask-image: none; --tint:#FFB454;"></div>
+        <div class="act-content">
+          <div class="act-time text-[#FF2E88]">15:10 · 30 min</div>
+          <div class="act-name">Leon Anavi</div>
+          <div class="act-role">Embedded Software Expert · Konsulko Group</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">Smart Home Displays with ePaper: a maker's guide using ESP32 and the Arduino ecosystem</a></div>
+          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · Bulgaria</div>
+        </div>
+      </div>
+
+      <div class="beam"></div>
+
+      <!-- ACT 5 — Alex Lennon -->
+      <div class="act text-right" style="--tint:#A855F7;">
+        <div class="act-photo left" style="background-image:url('imgs/alex.jpg'); width:22%; left:5%; -webkit-mask-image: none; mask-image: none; --tint:#FFB454;"></div>
+        <div class="act-content">
+          <div class="act-time text-[#A855F7]">15:40 · 30 min</div>
+          <div class="act-name">Alex Lennon</div>
+          <div class="act-role">Founder · Dynamic Devices</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">Agentic AI and Rust on Linux: accelerating Jaguar E-Ink bring-up with SSH, webcams, and Yocto</a></div>
+          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+        </div>
+      </div>
+
+      <div class="beam"></div>
+
+      <!-- ACT 6 — Summer Lin -->
+      <div class="act text-left" style="--tint:#FFB454;">
+        <div class="act-photo right" style="background-image:url('imgs/summer.jpg');"></div>
+        <div class="act-content">
+          <div class="act-time text-[#FFB454]">16:10 · 30 min</div>
+          <div class="act-name">Summer Lin</div>
+          <div class="act-role">Firmware Maintainer · Open-EP</div>
+          <div class="act-title"><a class="act-link" title="Session page — coming soon">Streaming Images from PC to an LCD on Zephyr over USB</a></div>
+          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════ BOOTH ══════════════════════════════════════════════ -->
+<section id="booth" class="py-24 px-6 relative z-10 scroll-mt-20">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="flex items-center gap-3 mb-4 reveal">
+      <div style="width:3px; height:24px; background: linear-gradient(180deg, #FF2E88, #A855F7); border-radius:2px; box-shadow: 0 0 12px rgba(168,85,247,0.7);"></div>
+      <p class="mono text-[#FF2E88]/70 text-xs tracking-[0.3em] uppercase">Find Us</p>
+    </div>
+
+    <h2 class="text-3xl md:text-5xl font-black text-white mb-12 reveal reveal-delay-1">
+      Visit Our <span class="gradient-text">Booth</span>
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- Booth info -->
+      <div class="glass p-8 rounded-2xl reveal reveal-delay-2 lift">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="p-3 rounded-xl" style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="font-bold text-white">Open-EP Booth</div>
+            <div class="text-white/40 text-xs">Exhibition Floor</div>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm">
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF2E88" stroke-width="2" class="mt-0.5 flex-shrink-0"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div>
+              <div class="text-white/70">NTUST Campus</div>
+              <div class="text-white/40 text-xs">No. 43, Sec. 4, Keelung Rd, Da'an Dist., Taipei · booth number TBA</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF2E88" stroke-width="2" class="mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+              <div class="text-white/70">Aug 8 – 9 · 9:30 – 16:30</div>
+              <div class="text-white/40 text-xs">Free to visit, no registration required</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF2E88" stroke-width="2" class="mt-0.5 flex-shrink-0"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <div>
+              <div class="text-white/70">Live demos &amp; hardware on display</div>
+              <div class="text-white/40 text-xs">Try our e-paper modules hands-on</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What to expect -->
+      <div class="glass p-8 rounded-2xl reveal reveal-delay-3 lift">
+        <p class="mono text-white/30 text-xs uppercase tracking-widest mb-6">What to expect</p>
+        <ul class="space-y-5">
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(255,46,136,0.1); border: 1px solid rgba(255,46,136,0.2);">🖥️</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Live E-Paper Demos</div>
+              <div class="text-white/40 text-xs mt-0.5">See PIXPAPER modules running in real time</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);">🐧</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Linux Kernel Integration</div>
+              <div class="text-white/40 text-xs mt-0.5">DRM driver, Device Tree, upstream kernel story</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(255,180,84,0.1); border: 1px solid rgba(255,180,84,0.2);">🤝</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Meet the Team</div>
+              <div class="text-white/40 text-xs mt-0.5">Chat with maintainers &amp; contributors in person</div>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-lg" style="background: rgba(255,46,136,0.1); border: 1px solid rgba(255,46,136,0.2);">📦</div>
+            <div>
+              <div class="text-white font-semibold text-sm">Module Showcase</div>
+              <div class="text-white/40 text-xs mt-0.5">PIXPAPER-213-C/M, PIXPAPER-426-M</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════════ ABOUT ══════════════════════════════════════════════ -->
+<section class="py-24 px-6 relative z-10">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="mono text-white/30 text-xs tracking-[0.3em] uppercase mb-4 reveal">About the Event</p>
+    <h2 class="text-2xl md:text-4xl font-black text-white mb-6 reveal reveal-delay-1">COSCUP × UBUCON Asia</h2>
+    <p class="text-white/50 max-w-2xl mx-auto leading-relaxed mb-8 reveal reveal-delay-2">
+      COSCUP is one of Asia's largest community-driven open-source conferences, held annually in Taipei. In 2026 it joins forces with UBUCON Asia — the regional gathering of the Ubuntu community — for a weekend of talks, workshops, and collaboration across the open-source world.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3 reveal reveal-delay-3">
+      <span class="tag">#COSCUP</span>
+      <span class="tag">#UBUCONAsia</span>
+      <span class="tag">Free &amp; Open</span>
+      <span class="tag">Taipei, Taiwan</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ FOOTER CTA ══════════════════════════════════════════════ -->
+<section class="py-20 px-6 relative z-10" style="background: linear-gradient(180deg, transparent, rgba(255,46,136,0.05));">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <p class="text-white/30 text-sm mb-2">Powered by open source</p>
+    <h2 class="text-3xl font-black text-white mb-8">
+      See you in <span class="gradient-text">Taipei</span>
+    </h2>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="https://coscup.org/2026/" target="_blank"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white flex items-center gap-2"
+         style="background: linear-gradient(135deg, #FF2E88, #A855F7);">
+        Event Page
+      </a>
+      <a href="https://github.com/open-ep" target="_blank"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white/70 hover:text-white glass transition-colors flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="index.html"
+         class="px-6 py-3 rounded-xl font-bold text-sm text-white/70 hover:text-white glass transition-colors">
+        ← Back to open-ep
+      </a>
+    </div>
+  </div>
+  <p class="text-center text-white/15 text-xs mt-12">&copy; 2026 Open E-Paper Community</p>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCRIPTS ══════════════════════════════════════════════ -->
+<script>
+  /* ── Floating gradient mesh ── */
+  (function() {
+    const canvas = document.getElementById('mesh-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, blobs = [];
+    const COLORS = [[255,46,136], [168,85,247], [255,180,84]];
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+    function mkBlob(i) {
+      return {
+        x: Math.random()*W, y: Math.random()*H,
+        r: Math.random()*180 + 120,
+        vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+        c: COLORS[i % COLORS.length]
+      };
+    }
+    function init() { resize(); blobs = Array.from({length:5}, (_,i)=>mkBlob(i)); }
+
+    function draw() {
+      ctx.clearRect(0,0,W,H);
+      blobs.forEach(b => {
+        b.x += b.vx; b.y += b.vy;
+        if (b.x < -b.r) b.x = W+b.r; if (b.x > W+b.r) b.x = -b.r;
+        if (b.y < -b.r) b.y = H+b.r; if (b.y > H+b.r) b.y = -b.r;
+        const g = ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+        g.addColorStop(0, `rgba(${b.c[0]},${b.c[1]},${b.c[2]},0.06)`);
+        g.addColorStop(1, `rgba(${b.c[0]},${b.c[1]},${b.c[2]},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    init(); draw();
+  })();
+
+  /* ── Countdown (to Open-EP track start) ── */
+  (function() {
+    const target = new Date('2026-08-08T13:30:00+08:00').getTime();
+    const els = { d:document.getElementById('cd-days'), h:document.getElementById('cd-hours'), m:document.getElementById('cd-mins'), s:document.getElementById('cd-secs') };
+    function pad(n){ return String(Math.max(0,n)).padStart(2,'0'); }
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) { els.d.textContent=els.h.textContent=els.m.textContent=els.s.textContent='00'; return; }
+      els.d.textContent = pad(Math.floor(diff/86400000));
+      els.h.textContent = pad(Math.floor((diff%86400000)/3600000));
+      els.m.textContent = pad(Math.floor((diff%3600000)/60000));
+      els.s.textContent = pad(Math.floor((diff%60000)/1000));
+    }
+    tick(); setInterval(tick, 1000);
+  })();
+
+  /* ── Scroll reveal ── */
+  (function() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  })();
+</script>
+</body>
+</html>
