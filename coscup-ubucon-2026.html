@@ -200,6 +200,7 @@
       .act-name  { font-size: clamp(1.45rem, 6.4vw, 2.5rem); overflow-wrap: break-word; hyphens: auto; }
       .act-title { font-size: 0.8rem; }
       .act-mode  { margin-top: 10px; }
+      .act-pills { margin-top: 10px; }
     }
     /* very narrow phones: give the photo a touch more room, shrink long names */
     @media (max-width: 430px) {
@@ -237,6 +238,13 @@
       content: '↗'; font-size: 0.8em; margin-left: 5px;
       color: var(--tint, #FF2E88); opacity: 0.85;
     }
+    /* Meta pill row (mode + language) */
+    .act-pills {
+      display: inline-flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 14px; vertical-align: middle;
+    }
+    .act-pills > * { margin-top: 0 !important; }
+
     /* In-person / Remote mode badge */
     .act-mode {
       display: inline-flex; align-items: center; gap: 6px;
@@ -249,6 +257,24 @@
     .act-mode.remote {
       border-color: rgba(168,85,247,0.45); color: rgba(192,132,252,0.95);
       background: rgba(168,85,247,0.1);
+    }
+
+    /* Talk language badge */
+    .act-lang {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .act-lang.mandarin {
+      border: 1px solid rgba(56,189,248,0.45);
+      color: rgba(125,211,252,0.98);
+      background: rgba(56,189,248,0.1);
+    }
+    .act-lang.english {
+      border: 1px solid rgba(52,211,153,0.45);
+      color: rgba(110,231,183,0.98);
+      background: rgba(52,211,153,0.1);
     }
 
     /* Glowing laser-beam divider */
@@ -416,7 +442,10 @@
           <div class="act-name">Wig Cheng</div>
           <div class="act-role">Community Maintainer · Open-EP</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">open-ep: From Hardware Design to the Mainline Kernel — a community's complete open-source journey</a></div>
-          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+          <div class="act-pills">
+            <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+            <div class="act-lang mandarin"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> Mandarin</div>
+          </div>
         </div>
       </div>
 
@@ -430,7 +459,10 @@
           <div class="act-name">LC Wang</div>
           <div class="act-role">DRM Maintainer · Open-EP</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">From SPI Display Panel to Android Screen: a DRM display-driver integration journey on ARM64</a></div>
-          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+          <div class="act-pills">
+            <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+            <div class="act-lang mandarin"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> Mandarin</div>
+          </div>
         </div>
       </div>
 
@@ -444,7 +476,10 @@
           <div class="act-name">ChengRuei Tsai</div>
           <div class="act-role">Hardware &amp; Firmware Lead · Open-EP</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">Decoding E-Paper Drivers: cross-model HAL design &amp; grayscale waveform implementation</a></div>
-          <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+          <div class="act-pills">
+            <div class="act-mode"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> In-person</div>
+            <div class="act-lang mandarin"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> Mandarin</div>
+          </div>
         </div>
       </div>
 
@@ -458,7 +493,10 @@
           <div class="act-name">Leon Anavi</div>
           <div class="act-role">Embedded Software Expert · Konsulko Group</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">Smart Home Displays with ePaper: a maker's guide using ESP32 and the Arduino ecosystem</a></div>
-          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · Bulgaria</div>
+          <div class="act-pills">
+            <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · Bulgaria</div>
+            <div class="act-lang english"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> English</div>
+          </div>
         </div>
       </div>
 
@@ -472,7 +510,10 @@
           <div class="act-name">Alex Lennon</div>
           <div class="act-role">Founder · Dynamic Devices</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">Agentic AI and Rust on Linux: accelerating Jaguar E-Ink bring-up with SSH, webcams, and Yocto</a></div>
-          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+          <div class="act-pills">
+            <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+            <div class="act-lang english"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> English</div>
+          </div>
         </div>
       </div>
 
@@ -486,7 +527,10 @@
           <div class="act-name">Summer Lin</div>
           <div class="act-role">Firmware Maintainer · Open-EP</div>
           <div class="act-title"><a class="act-link" title="Session page — coming soon">Streaming Images from PC to an LCD on Zephyr over USB</a></div>
-          <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+          <div class="act-pills">
+            <div class="act-mode remote"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg> Remote · UK</div>
+            <div class="act-lang mandarin"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg> Mandarin</div>
+          </div>
         </div>
       </div>
 
