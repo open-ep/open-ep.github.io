@@ -410,118 +410,125 @@
           </p>
         </div>
 
-        <div class="space-y-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           <!-- Raspberry Pi -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Raspberry+Pi" alt="Raspberry Pi" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
+                <img src="imgs/vendors/raspberry-pi.svg" alt="Raspberry Pi logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">Raspberry Pi</h3>
-                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi 5</span>
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi 2B</span>
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Raspberry Pi Zero 2W</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">Raspberry Pi</h3>
+                <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200 inline-block mt-1.5">Upstream Support</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Raspberry Pi 5</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Raspberry Pi 2B</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Raspberry Pi Zero 2W</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Raspberry Pi Pico 2</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Wiznet W6300-EVB-Pico2</span>
             </div>
           </div>
 
           <!-- NXP -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=NXP" alt="NXP" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
+                <img src="imgs/vendors/nxp.svg" alt="NXP logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">NXP Platforms</h3>
-                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">ADLINK LEC-IMX95 (IMX95)</span>
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">FRDM-IMX93 EVK (IMX93)</span>
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Mayqueen PANZER-PLUS (IMX8MP)</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">NXP Platforms</h3>
+                <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200 inline-block mt-1.5">Upstream Support</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">ADLINK LEC-IMX95 (IMX95)</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">FRDM-IMX93 EVK (IMX93)</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Mayqueen PANZER-PLUS (IMX8MP)</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">FRDM-IMX8MP EVK (IMX8MP)</span>
             </div>
           </div>
 
           <!-- Renesas -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Renesas" alt="Renesas" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
+                <img src="imgs/vendors/renesas.svg" alt="Renesas logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">Renesas Platforms</h3>
-                  <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">Official Support</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">ユリ電気 KAKIP (RZ/V2H)</span>
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">RZ/T2H EVK (RZ/T2H)</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">Renesas Platforms</h3>
+                <span class="text-xs font-mono bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200 inline-block mt-1.5">Upstream Support</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">ユリ電気 KAKIP (RZ/V2H)</span>
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">RZ/T2H EVK (RZ/T2H)</span>
             </div>
           </div>
 
           <!-- Telechips -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Telechips" alt="Telechips" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
+                <img src="imgs/vendors/telechips.jpg" alt="Telechips logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">Telechips Platforms</h3>
-                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">TOPST (D3-G)</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">Telechips Platforms</h3>
+                <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 inline-block mt-1.5">Community Tested</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">TOPST (D3-G)</span>
             </div>
           </div>
 
           <!-- Rockchip -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=Rockchip" alt="Rockchip" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
+                <img src="imgs/vendors/rockchip.jpg" alt="Rockchip logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">Rockchip Platform</h3>
-                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">Mayqueen CUBE-RK3588 (RK3588)</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">Rockchip Platform</h3>
+                <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 inline-block mt-1.5">Community Tested</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">Mayqueen CUBE-RK3588 (RK3588)</span>
+            </div>
+          </div>
+
+          <!-- RISC-V -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
+                <img src="imgs/vendors/riscv.png" alt="RISC-V logo" class="max-w-full max-h-full object-contain">
+              </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">RISC-V Platform</h3>
+                <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 inline-block mt-1.5">Community Tested</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">UIAPduino (CH32V003)</span>
             </div>
           </div>
 
           <!-- STMicroelectronics -->
-          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row">
-              <div class="md:w-48 lg:w-56 flex-shrink-0 bg-gray-100 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                <img src="https://placehold.co/200x200/e5e5e5/333333?text=STMicro" alt="STMicroelectronics" class="w-24 h-24 rounded-xl object-cover">
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
+                <img src="imgs/vendors/stmicroelectronics.svg" alt="STMicroelectronics logo" class="max-w-full max-h-full object-contain">
               </div>
-              <div class="flex-1 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-4">
-                  <h3 class="text-2xl font-bold text-ink-black">STMicroelectronics</h3>
-                  <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded-full border border-blue-200">Community Tested</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg border border-gray-200 font-medium">STM32F1 series EVK</span>
-                </div>
+              <div class="flex-1 min-w-0 pt-0.5">
+                <h3 class="text-lg font-bold text-ink-black leading-tight">STMicroelectronics</h3>
+                <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 inline-block mt-1.5">Community Tested</span>
               </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-lg border border-gray-200 font-medium">STM32F1 series EVK</span>
             </div>
           </div>
         </div>
