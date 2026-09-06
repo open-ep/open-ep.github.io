@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROBOEYE-100-M — Enclosure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b16; --ink:#eef1f8;
+  --dim:rgba(238,241,248,.52); --dim2:rgba(238,241,248,.30);
+  --line:rgba(238,241,248,.11); --card:rgba(14,20,38,.72);
+  --lime:#d2ec86; --r:14px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;
+}
+canvas{display:block;position:fixed;inset:0;touch-action:none;cursor:grab}
+canvas.drag{cursor:grabbing}
+
+.ui{position:fixed;inset:0;pointer-events:none;z-index:2}
+.ui > *{pointer-events:auto}
+
+.hd{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;
+    justify-content:space-between;gap:20px;padding:clamp(16px,2.4vmin,30px)}
+.title h1{margin:0;font-size:clamp(15px,2vmin,21px);font-weight:600;letter-spacing:-.02em}
+.title p{margin:4px 0 0;font-size:clamp(10px,1.2vmin,12.5px);color:var(--dim);letter-spacing:.055em}
+.title .rev{display:inline-block;margin-top:9px;padding:3px 9px;border-radius:999px;
+  background:rgba(210,236,134,.1);border:1px solid rgba(210,236,134,.28);
+  color:var(--lime);font-size:clamp(8.5px,1vmin,10px);font-weight:700;letter-spacing:.14em}
+
+.ways{display:flex;gap:7px;align-items:center}
+.way{width:clamp(22px,2.7vmin,28px);aspect-ratio:1;border-radius:50%;cursor:pointer;padding:0;
+  border:2px solid transparent;box-shadow:0 0 0 1px var(--line),0 3px 10px rgba(0,0,0,.45);
+  transition:transform .18s var(--ease),border-color .18s var(--ease)}
+.way:hover{transform:scale(1.12)}
+.way[aria-pressed="true"]{border-color:var(--lime);transform:scale(1.08)}
+
+.card{background:var(--card);backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.lbl{font-size:clamp(8px,.98vmin,10px);font-weight:800;letter-spacing:.19em;
+  color:var(--dim2);text-transform:uppercase}
+
+.parts{position:absolute;left:clamp(16px,2.4vmin,30px);top:50%;transform:translateY(-50%);
+  width:clamp(196px,20vmin,244px);padding:14px;max-height:74vh;overflow:auto;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.parts::-webkit-scrollbar{width:3px}
+.parts::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+.parts .lbl{margin-bottom:10px;display:block}
+.p{display:flex;align-items:center;gap:9px;width:100%;padding:7px 8px;margin:0 0 2px;
+  border-radius:9px;background:none;border:1px solid transparent;cursor:pointer;
+  font-family:inherit;text-align:left;color:var(--ink);
+  transition:background .16s var(--ease),border-color .16s var(--ease)}
+.p:hover{background:rgba(238,241,248,.06)}
+.p[aria-pressed="true"]{background:rgba(210,236,134,.12);border-color:rgba(210,236,134,.34)}
+.p .sw{width:9px;height:9px;border-radius:2.5px;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.p .tx{min-width:0}
+.p .nm{font-size:clamp(10px,1.16vmin,12px);font-weight:500;line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p .mt{font-size:clamp(8.5px,.98vmin,10px);color:var(--dim2);font-weight:500;margin-top:1px}
+.p .th{margin-left:auto;font-size:clamp(8.5px,1vmin,10px);color:var(--dim2);
+  font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.dock{position:absolute;left:50%;bottom:clamp(16px,2.4vmin,28px);transform:translateX(-50%);
+  display:flex;align-items:center;gap:clamp(10px,1.5vmin,18px);
+  padding:clamp(9px,1.3vmin,14px) clamp(13px,1.8vmin,19px);white-space:nowrap}
+.seg{display:flex;gap:3px;background:rgba(0,0,0,.3);padding:3px;border-radius:10px}
+.seg button{font-family:inherit;cursor:pointer;border:none;background:none;color:var(--dim);
+  padding:6px clamp(8px,1.1vmin,13px);border-radius:7px;
+  font-size:clamp(9.5px,1.1vmin,11.5px);font-weight:600;
+  transition:background .16s var(--ease),color .16s var(--ease)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:rgba(238,241,248,.14);color:var(--ink)}
+/* secondary fine-tune next to the Assembled / Exploded buttons */
+input[type=range]{-webkit-appearance:none;appearance:none;width:clamp(52px,6.6vmin,84px);
+  height:3px;background:rgba(238,241,248,.18);border-radius:9px;outline:none;cursor:pointer;
+  flex-shrink:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;
+  border-radius:50%;background:var(--lime);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.5);
+  transition:transform .15s var(--ease)}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border:none;border-radius:50%;
+  background:var(--lime);cursor:pointer}
+.tog{font-family:inherit;cursor:pointer;padding:7px clamp(9px,1.2vmin,13px);border-radius:9px;
+  background:rgba(238,241,248,.07);border:1px solid var(--line);color:var(--dim);
+  font-size:clamp(9.5px,1.1vmin,11.5px);font-weight:600;
+  transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease)}
+.tog:hover{background:rgba(238,241,248,.13);color:var(--ink)}
+.tog[aria-pressed="true"]{background:var(--lime);color:#131a08;border-color:transparent;font-weight:700}
+.rule{width:1px;height:22px;background:var(--line);flex-shrink:0}
+
+.specs{position:absolute;right:clamp(16px,2.4vmin,30px);top:50%;transform:translateY(-50%);
+  width:clamp(158px,16.5vmin,204px);padding:14px}
+.specs .lbl{margin-bottom:10px;display:block}
+.specs dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:7px 10px;align-items:baseline}
+.specs dt{font-size:clamp(9.5px,1.1vmin,11.5px);color:var(--dim)}
+.specs dd{margin:0;font-size:clamp(9.5px,1.1vmin,11.5px);font-weight:600;
+  font-variant-numeric:tabular-nums;text-align:right}
+
+.hint{position:absolute;bottom:clamp(16px,2.4vmin,28px);right:clamp(16px,2.4vmin,30px);
+  font-size:clamp(9px,1.04vmin,11px);color:var(--dim2);letter-spacing:.06em;
+  text-align:right;line-height:1.6}
+
+.dim{position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+  padding:3px 8px;border-radius:6px;background:rgba(7,11,22,.86);
+  border:1px solid rgba(210,236,134,.35);color:var(--lime);
+  font-size:clamp(8.5px,1vmin,10.5px);font-weight:700;letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+  opacity:0;transition:opacity .3s var(--ease)}
+.dim.on{opacity:1}
+
+.load{position:fixed;inset:0;z-index:9;display:grid;place-items:center;background:var(--bg);
+  transition:opacity .6s var(--ease);text-align:center;padding:24px}
+.load.gone{opacity:0;pointer-events:none}
+.spin{width:30px;height:30px;margin:0 auto 14px;border-radius:50%;
+  border:2px solid rgba(238,241,248,.14);border-top-color:var(--lime);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.load p{margin:0;font-size:11px;color:var(--dim);letter-spacing:.16em;font-weight:600}
+.load .err{color:#ff8a7a;max-width:460px;line-height:1.75;letter-spacing:normal;
+  font-weight:500;text-align:left;font-size:12.5px}
+.load .err code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;
+  font-size:.92em;word-break:break-all}
+
+@media (max-width:940px){
+  .parts,.specs{display:none}
+  .dock{gap:9px;padding:8px 11px;flex-wrap:wrap;justify-content:center;
+    max-width:calc(100vw - 24px);white-space:normal}
+  .hint{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="load" id="load">
+  <div>
+    <div class="spin" id="spin"></div>
+    <p id="loadTxt">LOADING GEOMETRY</p>
+  </div>
+</div>
+
+<div class="ui">
+  <header class="hd">
+    <div class="title">
+      <h1>ROBOEYE-100-M</h1>
+      <p id="subTitle">Enclosure assembly · 5 parts</p>
+      <span class="rev">STL 0213</span>
+    </div>
+    <div class="ways" id="ways"></div>
+  </header>
+
+  <aside class="card parts" id="partList"><span class="lbl">Assembly</span></aside>
+
+  <aside class="card specs">
+    <span class="lbl">Envelope</span>
+    <dl id="specList"></dl>
+  </aside>
+
+  <div class="card dock">
+    <div class="seg" id="views">
+      <button data-v="iso" aria-pressed="true">Iso</button>
+      <button data-v="front">Front</button>
+      <button data-v="back">Back</button>
+      <button data-v="side">Side</button>
+      <button data-v="top">Top</button>
+    </div>
+    <div class="rule"></div>
+    <div class="seg" id="asm">
+      <button data-x="0" aria-pressed="true">Assembled</button>
+      <button data-x="100" aria-pressed="false">Exploded</button>
+    </div>
+    <input type="range" id="explode" min="0" max="100" value="0"
+           aria-label="Explode amount" title="Explode amount">
+    <div class="rule"></div>
+    <button class="tog" id="tSpin" aria-pressed="true">Auto-spin</button>
+    <button class="tog" id="tWire" aria-pressed="false">Wireframe</button>
+    <button class="tog" id="tEdge" aria-pressed="false">Edges</button>
+    <button class="tog" id="tDim" aria-pressed="false">Dims</button>
+  </div>
+
+  <p class="hint">
+    Drag to orbit · scroll to zoom<br>
+    <span style="color:var(--dim2)">1–5 views · E explode · W wireframe</span>
+  </p>
+
+  <div class="dim" id="dimW"></div>
+  <div class="dim" id="dimH"></div>
+  <div class="dim" id="dimD"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="pcb.js"></script>
+<script>
+'use strict';
+
+/* ════════════════════════════════════════════════════════
+   PART MANIFEST — real STLs, read from their canonical path
+   ════════════════════════════════════════════════════════ */
+const SRC = 'assets/';
+
+/* Listed in ASSEMBLY ORDER, back → front. This drives the explode.
+   It is design intent and cannot be derived from the geometry: the screen
+   front is a deep shell (Z 64.0–72.0) that encloses the gasket (69–70) and
+   glass (70–71), so its Z centroid (68.0) is lower than theirs and sorting
+   by centroid would wrongly drop it into the middle of the stack. */
+const MANIFEST = [
+  { file:'all - back case-1.stl',         name:'Back case',    mat:'shell',  sw:'#3a4152' },
+  { file:'all - PCB back 0213-1.stl',     name:'PCB',          mat:'pcb',    sw:'#1c7a52',
+    pcb:true },   /* STL is a placeholder block; the real board is built from Gerbers */
+  { file:'all - glass-1.stl',             name:'Glass',        mat:'glass',  sw:'#9fd8ff' },
+  /* No STL — generated. Sits in the glass/gasket interface. */
+  { file:'__panel__',                     name:'E-paper 2.13″', mat:'epaper',
+    sw:'#d9d7ce', synth:'panel' },
+  { file:'all - gasket-1.stl',            name:'Gasket',       mat:'rubber', sw:'#20242e' },
+  /* No STL for this one — generated. Footprint is taken from the gasket and
+     it fills the gap between the gasket and the front face, so it follows
+     along if either of those moves. See ACRYLIC. */
+  { file:'__acrylic__',                   name:'Acrylic window', mat:'acrylic',
+    sw:'#bfe9ff', synth:'acrylic' },
+  { file:'all - screen front 0213-1.stl', name:'Screen front', mat:'bezel',  sw:'#7f889c' },
+];
+
+/* Acrylic window, sitting on the gasket. thickness null = fill the remaining
+   space out to the screen front's outer face (1.0 mm as the parts stand, which
+   puts it flush with the bezel). Set a number in mm to override. */
+const ACRYLIC = { thickness: null };
+
+/* 2.13" e-paper panel, inserted at the glass/gasket interface.
+
+   Those two plates currently touch at Z 70.0, so the panel has to displace
+   something. It is seated against the gasket and the GLASS is pushed back by
+   the panel thickness — that keeps the front face at 72.0, which is the
+   dimension the enclosure actually fixes. Set pushBack false to grow forward
+   instead (which would put the acrylic past the bezel).
+
+   Outline/thickness are the standard 2.13" module figures (GDEY0213 family),
+   not a datasheet you gave me — correct here if your panel differs.
+
+   The panel renders as one plain white sheet — no border, no active-area
+   inset, nothing circular. ROBOEYE only *uses* a 25.4 mm circular region,
+   but that limit is cut by the bezel aperture, not by the panel, so it is
+   drawn on the screen front where it belongs. */
+const PANEL = {
+  w: 59.2, h: 29.2, t: 1.05,
+  pushBack: true,
+};
+
+/* Where the real board sits inside the slot the placeholder STL reserves.
+   XY is centred on that slot and Z is bottom-aligned to it — an assumption,
+   because the fab package carries no assembly position.
+
+   flip: board turned over, so the populated side faces the back case and the
+         bare side faces the display. The slab stays in the same Z band; the
+         components now hang into the back-case cavity instead of standing up
+         towards the gasket.
+   rotZ: in-plane spin in degrees. Turning a board over is ambiguous — flipping
+         about X and about Y both do it, and they differ by 180° in plane, which
+         swaps which edge each connector lands on. flip + rotZ 180 is a Y-flip,
+         the orientation where the legend still reads upright from the component
+         side. Set rotZ 0 for the X-flip if the connectors belong on the other
+         edges; that is an assembly fact the fab package does not carry.
+
+   Units mm / degrees. */
+const PCB_FIT = { x:0, y:0, z:0, flip:true, rotZ:180 };
+
+/* The STL plates put Glass at Z 70–71 and Gasket at 69–70 — glass in front of
+   the gasket — which contradicts the assembly order above (gasket in front,
+   a face seal compressed under the bezel lip). Left alone, the exploded view
+   and the assembled positions would disagree with each other.
+
+   This exchanges the two plates' Z bands so both views tell the same story.
+   Set false to keep the STL positions exactly as exported, in which case the
+   list order is the only thing that changed. */
+const SWAP_GLASS_GASKET_Z = true;
+
+if(typeof THREE === 'undefined'){
+  fail('Could not load three.js from cdnjs. This page needs one network request to '+
+       '<code>cdnjs.cloudflare.com</code> — check your connection, then reload.');
+} else {
+  boot().catch(e=>fail('Failed to load the model.<br><br>'+e.message));
+}
+
+function fail(html){
+  const s=document.getElementById('spin'); if(s) s.style.display='none';
+  const t=document.getElementById('loadTxt');
+  t.className='err'; t.innerHTML=html;
+}
+
+/* ════════════════════════════════════════════════════════
+   BINARY / ASCII STL PARSER
+   ════════════════════════════════════════════════════════ */
+function parseSTL(buf){
+  const head = new TextDecoder().decode(new Uint8Array(buf, 0, Math.min(512, buf.byteLength)));
+  if(/^\s*solid/.test(head) && /facet\s+normal/i.test(head)) return parseASCII(buf);
+  return parseBinary(buf);
+}
+
+function parseBinary(buf){
+  const dv = new DataView(buf);
+  if(buf.byteLength < 84) throw new Error('STL shorter than a valid header.');
+  const n = dv.getUint32(80, true);
+  if(84 + n*50 > buf.byteLength) throw new Error('STL triangle count exceeds file length.');
+
+  const pos = new Float32Array(n*9), nor = new Float32Array(n*9);
+  let o = 84;
+  for(let i=0;i<n;i++){
+    const nx=dv.getFloat32(o,true), ny=dv.getFloat32(o+4,true), nz=dv.getFloat32(o+8,true);
+    for(let v=0;v<3;v++){
+      const b=o+12+v*12, k=i*9+v*3;
+      pos[k  ]=dv.getFloat32(b,   true);
+      pos[k+1]=dv.getFloat32(b+4, true);
+      pos[k+2]=dv.getFloat32(b+8, true);
+      nor[k  ]=nx; nor[k+1]=ny; nor[k+2]=nz;
+    }
+    o += 50;
+  }
+  return buildGeom(pos, nor, n);
+}
+
+function parseASCII(buf){
+  const txt = new TextDecoder().decode(new Uint8Array(buf));
+  const P=[], N=[]; let cn=[0,0,1];
+  const re = /facet\s+normal\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)|vertex\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)/g;
+  let m;
+  while((m = re.exec(txt))){
+    if(m[1]!==undefined){ cn=[+m[1],+m[2],+m[3]]; }
+    else { P.push(+m[4],+m[5],+m[6]); N.push(cn[0],cn[1],cn[2]); }
+  }
+  return buildGeom(new Float32Array(P), new Float32Array(N), P.length/9);
+}
+
+function buildGeom(pos, nor, tris){
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  /* trust the file normals unless they're degenerate */
+  let ok=false;
+  for(let i=0;i<nor.length;i+=3){
+    if(nor[i]||nor[i+1]||nor[i+2]){ ok=true; break; }
+  }
+  if(ok) g.setAttribute('normal', new THREE.BufferAttribute(nor,3));
+  else g.computeVertexNormals();
+  g.userData.tris = tris;
+  return g;
+}
+
+/* ════════════════════════════════════════════════════════
+   BOOT
+   ════════════════════════════════════════════════════════ */
+async function boot(){
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x070b16);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.physicallyCorrectLights = true;
+document.body.appendChild(renderer.domElement);
+
+const camera = new THREE.PerspectiveCamera(34, innerWidth/innerHeight, 1, 3000);
+
+/* ── procedural studio environment ─────────────────────── */
+const envScene = new THREE.Scene();
+{
+  envScene.add(new THREE.Mesh(
+    new THREE.BoxGeometry(600,420,600),
+    new THREE.MeshBasicMaterial({color:0x20283c, side:THREE.BackSide})));
+  const soft=(w,h,x,y,z,rx,ry,c,i)=>{
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:c}));
+    m.material.color.multiplyScalar(i);
+    m.position.set(x,y,z); m.rotation.set(rx,ry,0); envScene.add(m);
+  };
+  soft(280,180,   0, 160,  60, Math.PI/2, 0, 0xffffff, 3.4);
+  soft(210,210,-205,  36,  96, 0, Math.PI/2.6, 0xcfe0ff, 1.8);
+  soft(185,185, 205,  12, -60, 0,-Math.PI/2.2, 0xffe6c9, 1.25);
+  soft(240,120,   0,-135,  36,-Math.PI/2, 0, 0x28304a, .7);
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+pmrem.compileEquirectangularShader();
+scene.environment = pmrem.fromScene(envScene, 0.03).texture;
+
+/* ── lights ────────────────────────────────────────────── */
+const key = new THREE.DirectionalLight(0xffffff, 2.6);
+key.position.set(70,110,90); key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.camera.near=20; key.shadow.camera.far=420;
+key.shadow.camera.left=-90; key.shadow.camera.right=90;
+key.shadow.camera.top=90;   key.shadow.camera.bottom=-90;
+key.shadow.bias=-0.002; key.shadow.radius=3.2;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xbcd0ff, 1.5);
+rim.position.set(-85,28,-70); scene.add(rim);
+scene.add(new THREE.AmbientLight(0xffffff,.26));
+
+/* ════════════════════════════════════════════════════════
+   MATERIALS + COLOURWAYS
+   ════════════════════════════════════════════════════════ */
+const WAYS = {
+  graphite:{label:'Graphite', shell:0x272c3c, bezel:0x2f3546},
+  silver:  {label:'Silver',   shell:0xb2b8c4, bezel:0xc4cad4},
+  chalk:   {label:'Chalk',    shell:0xe6e5de, bezel:0xf1f0e9},
+  ink:     {label:'Ink',      shell:0x12151f, bezel:0x181c29},
+};
+let way='graphite';
+
+const MATS = {
+  shell : new THREE.MeshStandardMaterial({color:WAYS[way].shell, metalness:.16, roughness:.62, envMapIntensity:.9}),
+  bezel : new THREE.MeshPhysicalMaterial({color:WAYS[way].bezel, metalness:.30, roughness:.48,
+            clearcoat:.35, clearcoatRoughness:.5, envMapIntensity:1.1}),
+  pcb   : new THREE.MeshStandardMaterial({color:0x11583a, metalness:.18, roughness:.70}),
+  rubber: new THREE.MeshStandardMaterial({color:0x171a22, metalness:.02, roughness:.94}),
+  glass : new THREE.MeshPhysicalMaterial({color:0x0e1626, metalness:0, roughness:.045,
+            clearcoat:1, clearcoatRoughness:.02, transparent:true, opacity:.30,
+            envMapIntensity:2.2, side:THREE.DoubleSide}),
+  /* plain white e-paper sheet — matte, no border, no active-area inset */
+  epaper: new THREE.MeshStandardMaterial({color:0xf0eee8, metalness:0, roughness:.9,
+            envMapIntensity:.45}),
+  /* acrylic reads clearer and less blue than the cover glass */
+  acrylic: new THREE.MeshPhysicalMaterial({color:0xdcecfa, metalness:0, roughness:.06,
+            clearcoat:1, clearcoatRoughness:.03, transparent:true, opacity:.16,
+            envMapIntensity:1.7, side:THREE.DoubleSide}),
+};
+
+/* ════════════════════════════════════════════════════════
+   LOAD ALL PARTS
+   ════════════════════════════════════════════════════════ */
+const txt = document.getElementById('loadTxt');
+const geoms = [];
+for(let i=0;i<MANIFEST.length;i++){
+  const m = MANIFEST[i];
+  if(m.synth){ geoms.push({ ...m, geom:null }); continue; }   // built below
+  txt.textContent = `LOADING ${i+1} / ${MANIFEST.length}`;
+  const url = SRC + encodeURIComponent(m.file);
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`${res.status} ${res.statusText} — <code>${url}</code>`);
+  geoms.push({ ...m, geom: parseSTL(await res.arrayBuffer()) });
+}
+
+/* exchange the glass and gasket Z bands, so geometry agrees with the
+   assembly order (see SWAP_GLASS_GASKET_Z) */
+if(SWAP_GLASS_GASKET_Z){
+  const gl = geoms.find(g=>/glass/i.test(g.file));
+  const ga = geoms.find(g=>/gasket/i.test(g.file));
+  if(gl && ga){
+    gl.geom.computeBoundingBox(); ga.geom.computeBoundingBox();
+    const zl = gl.geom.boundingBox.min.z, zg = ga.geom.boundingBox.min.z;
+    gl.geom.translate(0,0, zg - zl);
+    ga.geom.translate(0,0, zl - zg);
+  }
+}
+
+/* generated 2.13" e-paper panel, seated against the gasket in the
+   glass/gasket interface; the glass is pushed back to make room */
+{
+  const pn = geoms.find(g=>g.synth==='panel');
+  const gk = geoms.find(g=>/gasket/i.test(g.file));
+  const gl = geoms.find(g=>/glass/i.test(g.file));
+  if(pn && gk && gl){
+    gk.geom.computeBoundingBox(); gl.geom.computeBoundingBox();
+    const gkb = gk.geom.boundingBox;
+    const ztop = gkb.min.z;                       // sits against the gasket
+    const zmin = ztop - PANEL.t;
+
+    if(PANEL.pushBack) gl.geom.translate(0, 0, zmin - gl.geom.boundingBox.max.z);
+    gl.geom.computeBoundingBox();
+
+    const g = new THREE.BoxGeometry(PANEL.w, PANEL.h, PANEL.t);
+    g.translate((gkb.min.x+gkb.max.x)/2, (gkb.min.y+gkb.max.y)/2, zmin + PANEL.t/2);
+    g.computeBoundingBox();
+    g.userData.tris = 12;
+    pn.geom = g;
+    pn.generated = true;
+
+    /* One plain white sheet — no texture, no per-face materials. */
+  }
+}
+
+/* generated acrylic window: gasket's footprint, seated on the gasket, filling
+   out to the screen front's outer face */
+{
+  const ac = geoms.find(g=>g.synth==='acrylic');
+  const gk = geoms.find(g=>/gasket/i.test(g.file));
+  const sf = geoms.find(g=>/screen front/i.test(g.file));
+  if(ac && gk && sf){
+    gk.geom.computeBoundingBox(); sf.geom.computeBoundingBox();
+    const gb = gk.geom.boundingBox, sb = sf.geom.boundingBox;
+    const zmin = gb.max.z;                                   // sits on the gasket
+    const t = ACRYLIC.thickness != null ? ACRYLIC.thickness
+                                        : Math.max(0.2, sb.max.z - zmin);
+    const g = new THREE.BoxGeometry(gb.max.x-gb.min.x, gb.max.y-gb.min.y, t);
+    g.translate((gb.min.x+gb.max.x)/2, (gb.min.y+gb.max.y)/2, zmin + t/2);
+    g.computeBoundingBox();
+    g.userData.tris = 12;
+    ac.geom = g;
+    ac.generated = true;
+    ac.thickness = t;
+  }
+}
+
+/* combined bounds → recentre the whole assembly on the origin */
+const all = new THREE.Box3();
+geoms.forEach(g=>{ g.geom.computeBoundingBox(); all.union(g.geom.boundingBox); });
+const size = all.getSize(new THREE.Vector3());
+const mid  = all.getCenter(new THREE.Vector3());
+
+/* per-part metrics, captured before recentring */
+geoms.forEach(g=>{
+  const b = g.geom.boundingBox;
+  g.size = b.getSize(new THREE.Vector3());
+  g.zc   = b.getCenter(new THREE.Vector3()).z;
+});
+
+/* Explode follows the MANIFEST order (see the note there) — not the Z
+   centroid, which mis-sorts shells that enclose other parts.
+   Step is scaled off the part footprint, not the stack height, or a thin
+   assembly like this one barely separates. */
+const ordered = geoms;
+const STEP = Math.max(size.x, size.y) * 0.42;
+ordered.forEach((g,i)=>{
+  g.spread = (i - (ordered.length-1)/2) * STEP;
+});
+
+/* ── real board from the Gerbers ───────────────────────── */
+txt.textContent = 'BUILDING BOARD';
+let PCB = null;
+try {
+  PCB = await buildPCB(THREE, {});
+} catch(e){
+  console.warn('Gerber board build failed, keeping the placeholder block:', e);
+}
+
+/* ── build meshes ──────────────────────────────────────── */
+const root = new THREE.Group();
+scene.add(root);
+
+const PARTS = [];
+geoms.forEach(g=>{
+  g.geom.translate(-mid.x, -mid.y, -mid.z);      // recentre
+  g.geom.computeBoundingBox();                   // stale after translate
+  const slot = g.geom.boundingBox.clone();       // volume the STL reserves
+
+  const grp = new THREE.Group();
+  let mesh, edgeSrc, host = grp, bb = slot;
+
+  if(g.pcb && PCB){
+    /* drop the Gerber-built board into the slot, XY-centred and
+       bottom-aligned (see PCB_FIT) */
+    mesh = PCB.mesh;
+    /* rotate about the group origin, which sits at the board's mid-plane,
+       so a flip leaves the slab in place and only swings the parts through */
+    PCB.group.rotation.set(PCB_FIT.flip ? Math.PI : 0, 0,
+                           (PCB_FIT.rotZ||0) * Math.PI/180);
+    PCB.group.position.set(
+      (slot.min.x+slot.max.x)/2 + PCB_FIT.x,
+      (slot.min.y+slot.max.y)/2 + PCB_FIT.y,
+      slot.min.z + PCB.thickness/2 + PCB_FIT.z
+    );
+    grp.add(PCB.group);
+    host = PCB.group;
+    edgeSrc = mesh.geometry;
+
+    /* bounds of what is actually drawn — board plus populated parts,
+       not the placeholder block */
+    grp.updateMatrixWorld(true);
+    bb = new THREE.Box3().setFromObject(grp);
+
+    g.name = `PCB · ${PCB.size.x.toFixed(1)} × ${PCB.size.y.toFixed(1)}`;
+    g.fromGerber = true;
+  } else {
+    mesh = new THREE.Mesh(g.geom, g.faceMats || MATS[g.mat]);
+    edgeSrc = g.geom;
+    grp.add(mesh);              // the PCB branch parents its mesh via PCB.group
+  }
+  mesh.castShadow = mesh.receiveShadow = true;
+
+  /* crisp CAD edges, off by default */
+  const edges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(edgeSrc, 24),
+    new THREE.LineBasicMaterial({color:0x9fb0d0, transparent:true, opacity:.34})
+  );
+  edges.visible = false;
+  host.add(edges);
+
+  root.add(grp);
+  PARTS.push({...g, group:grp, mesh, edges, id:g.file, bb});
+});
+
+/* ── ground shadow ─────────────────────────────────────── */
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(1400,1400),
+  new THREE.ShadowMaterial({opacity:.40})
+);
+ground.rotation.x = -Math.PI/2;
+ground.position.y = -size.y/2 - Math.max(6, size.y*0.30);
+ground.receiveShadow = true;
+scene.add(ground);
+
+/* ════════════════════════════════════════════════════════
+   UI FROM REAL DATA
+   ════════════════════════════════════════════════════════ */
+const mm = v => v.toFixed(1);
+document.getElementById('subTitle').textContent =
+  `Enclosure assembly · ${PARTS.length} parts · ${mm(size.x)} × ${mm(size.y)} × ${mm(size.z)} mm`;
+
+document.getElementById('specList').innerHTML = `
+  <dt>Width</dt><dd>${mm(size.x)}</dd>
+  <dt>Height</dt><dd>${mm(size.y)}</dd>
+  <dt>Depth</dt><dd>${mm(size.z)}</dd>
+  <dt>Diagonal</dt><dd>${mm(Math.hypot(size.x,size.y))}</dd>
+  <dt>Parts</dt><dd>${PARTS.length}</dd>
+  <dt>Triangles</dt><dd>${PARTS.reduce((a,p)=>a+p.geom.userData.tris,0).toLocaleString()}</dd>`;
+
+const listEl = document.getElementById('partList');
+ordered.forEach(g=>{
+  const p = PARTS.find(x=>x.file===g.file);
+  const gerber = p.fromGerber && PCB;
+  const meta = gerber      ? `Gerber · 2 layer · ${PCB.parts} parts`
+             : p.synth==='panel'   ? '250×122 · e-paper'
+             : p.generated ? 'generated · acrylic'
+             : `${p.geom.userData.tris.toLocaleString()} tris`;
+  const thick = gerber ? PCB.thickness : p.size.z;
+  const b = document.createElement('button');
+  b.className='p'; b.dataset.id=p.id; b.setAttribute('aria-pressed','false');
+  b.innerHTML = `<span class="sw" style="background:${p.sw}"></span>
+    <span class="tx"><span class="nm">${p.name}</span>
+    <span class="mt">${meta}</span></span>
+    <span class="th">${mm(thick)} mm</span>`;
+  b.onclick = ()=>setIso(p.id);
+  listEl.appendChild(b);
+});
+
+const waysEl = document.getElementById('ways');
+Object.entries(WAYS).forEach(([k,v])=>{
+  const b=document.createElement('button');
+  b.className='way'; b.dataset.w=k; b.title=v.label;
+  b.setAttribute('aria-label', v.label);
+  b.setAttribute('aria-pressed', String(k===way));
+  b.style.background='#'+v.shell.toString(16).padStart(6,'0');
+  b.onclick=()=>{
+    way=k;
+    MATS.shell.color.setHex(v.shell);
+    MATS.bezel.color.setHex(v.bezel);
+    document.querySelectorAll('#ways .way').forEach(x=>
+      x.setAttribute('aria-pressed', String(x.dataset.w===k)));
+  };
+  waysEl.appendChild(b);
+});
+
+/* ════════════════════════════════════════════════════════
+   ORBIT — full 360°
+   ════════════════════════════════════════════════════════ */
+/* Bounding box of the whole assembly at a given explode amount. */
+const _bb = new THREE.Box3();
+function boxAt(ex){
+  _bb.makeEmpty();
+  PARTS.forEach(p=>{
+    _bb.expandByPoint(new THREE.Vector3(p.bb.min.x, p.bb.min.y, p.bb.min.z + p.spread*ex));
+    _bb.expandByPoint(new THREE.Vector3(p.bb.max.x, p.bb.max.y, p.bb.max.z + p.spread*ex));
+  });
+  return _bb;
+}
+
+/* Exact camera distance to frame `box` from orbit angles (th, ph).
+   Solves per corner: a corner sits inside the frustum when
+       lateral / (d - along) <= tan(halfFOV)   =>   d >= lateral/tan + along
+   The `+ along` term is the one a naive fit drops — it is why corners nearer
+   the camera project larger and a 68.5 mm-deep assembly overflows a frame
+   sized for its centre plane. Taking the max over all 8 corners is exact. */
+const _u=new THREE.Vector3(), _rt=new THREE.Vector3(), _up=new THREE.Vector3(),
+      _cu=new THREE.Vector3(), _p=new THREE.Vector3();
+function fitFor(th, ph, box, pad){
+  const sp=Math.sin(ph);
+  _u.set(sp*Math.sin(th), Math.cos(ph), sp*Math.cos(th)).normalize();
+  _up.set(0,1,0);
+  _rt.crossVectors(_up,_u);
+  if(_rt.lengthSq()<1e-8) _rt.set(1,0,0);            // looking straight down
+  _rt.normalize();
+  _cu.crossVectors(_u,_rt).normalize();
+
+  const tv=Math.tan(camera.fov*Math.PI/360);
+  const tH=tv*camera.aspect;
+  let d=0;
+  for(const X of [box.min.x,box.max.x])
+    for(const Y of [box.min.y,box.max.y])
+      for(const Z of [box.min.z,box.max.z]){
+        _p.set(X,Y,Z);
+        const along=_p.dot(_u);
+        d=Math.max(d, Math.abs(_p.dot(_rt))/tH + along,
+                      Math.abs(_p.dot(_cu))/tv + along);
+      }
+  return d*(pad===undefined?1.10:pad);
+}
+
+let FIT = fitFor(-.62, 1.16, boxAt(0));
+let R_MIN = FIT*0.28, R_MAX = FIT*4.0;
+
+const cam={th:-.62, ph:1.16, r:FIT}, tgt={th:-.62, ph:1.16, r:FIT};
+const PH_MIN=.12, PH_MAX=Math.PI-.12;
+
+let dragging=false,lastX=0,lastY=0,idle=0,spin=true;
+const el=renderer.domElement;
+
+el.addEventListener('pointerdown',e=>{
+  dragging=true; lastX=e.clientX; lastY=e.clientY; idle=0;
+  el.classList.add('drag'); el.setPointerCapture(e.pointerId);
+});
+el.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+  tgt.th -= (e.clientX-lastX)*.0072;
+  tgt.ph  = Math.max(PH_MIN, Math.min(PH_MAX, tgt.ph - (e.clientY-lastY)*.0062));
+  lastX=e.clientX; lastY=e.clientY; idle=0;
+});
+const stop=e=>{ dragging=false; el.classList.remove('drag');
+  if(e.pointerId!==undefined && el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId); };
+el.addEventListener('pointerup',stop);
+el.addEventListener('pointercancel',stop);
+el.addEventListener('wheel',e=>{
+  e.preventDefault();
+  tgt.r=Math.max(R_MIN,Math.min(R_MAX,tgt.r+e.deltaY*FIT*.0006)); idle=0;
+},{passive:false});
+
+let pinch0=null;
+el.addEventListener('touchstart',e=>{
+  if(e.touches.length===2) pinch0=Math.hypot(
+    e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+},{passive:true});
+el.addEventListener('touchmove',e=>{
+  if(e.touches.length===2 && pinch0){
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,
+                       e.touches[0].clientY-e.touches[1].clientY);
+    tgt.r=Math.max(R_MIN,Math.min(R_MAX,tgt.r*(pinch0/d))); pinch0=d; idle=0;
+  }
+},{passive:true});
+el.addEventListener('touchend',()=>{pinch0=null;},{passive:true});
+
+/* distance is solved per view from the real box, so each one frames tightly
+   whether the stack is assembled or exploded */
+const VIEWS={
+  iso:{th:-.62,ph:1.16}, front:{th:0,ph:Math.PI/2},
+  back:{th:Math.PI,ph:Math.PI/2}, side:{th:-Math.PI/2,ph:Math.PI/2},
+  top:{th:0,ph:.20},
+};
+function goView(v){
+  const p=VIEWS[v]; if(!p) return;
+  let d=p.th-tgt.th;                       // shortest way round
+  while(d> Math.PI) d-=Math.PI*2;
+  while(d<-Math.PI) d+=Math.PI*2;
+  tgt.th+=d; tgt.ph=p.ph;
+  tgt.r=fitFor(p.th, p.ph, boxAt(explodeT)); idle=0;
+  document.querySelectorAll('#views button').forEach(b=>
+    b.setAttribute('aria-pressed',String(b.dataset.v===v)));
+}
+
+/* ════════════════════════════════════════════════════════
+   EXPLODE / WIRE / EDGES / ISOLATE
+   ════════════════════════════════════════════════════════ */
+let explodeT=0, explodeV=0;
+const slider = document.getElementById('explode');
+
+/* single source of truth — buttons and slider both route through here */
+function setExplode(pct){
+  pct = Math.max(0, Math.min(100, pct));
+  explodeT = pct/100;
+  slider.value = pct;
+  document.querySelectorAll('#asm button').forEach(b=>
+    b.setAttribute('aria-pressed', String(+b.dataset.x === pct)));
+  /* reframe for the new extent — the camera pulls back in step with the
+     parts separating, so nothing ever leaves the frame */
+  tgt.r = fitFor(tgt.th, tgt.ph, boxAt(explodeT));
+  idle = 0;
+}
+slider.addEventListener('input', e=>setExplode(+e.target.value));
+document.getElementById('asm').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(b) setExplode(+b.dataset.x);
+});
+
+let wire=false;
+function setWire(v){
+  wire=v;                       // applied to every clone by syncClones()
+  document.getElementById('tWire').setAttribute('aria-pressed',String(v));
+}
+let edges=false;
+function setEdges(v){
+  edges=v;
+  PARTS.forEach(p=>p.edges.visible=v);
+  document.getElementById('tEdge').setAttribute('aria-pressed',String(v));
+}
+
+/* Isolate needs per-part material clones so opacity is independent. A part
+   is not always one mesh with one material: the board carries six (one per
+   box face) and drags a populated component tree along with it, so walk the
+   whole group and collect everything. */
+PARTS.forEach(p=>{
+  const list = [];
+  p.group.traverse(o=>{
+    if(!o.isMesh) return;
+    const arr = Array.isArray(o.material);
+    const cl  = (arr ? o.material : [o.material]).map(m=>m.clone());
+    o.material = arr ? cl : cl[0];
+    list.push(...cl);
+  });
+  p.mats = list;
+  p.op0  = list.map(m=>m.opacity);
+  p.tr0  = list.map(m=>m.transparent);
+});
+/* keep clones colour-synced with the colourway */
+const syncClones = ()=>PARTS.forEach(p=>{
+  if(p.mat==='shell') p.mats[0].color.copy(MATS.shell.color);
+  if(p.mat==='bezel') p.mats[0].color.copy(MATS.bezel.color);
+  p.mats.forEach(m=>{ m.wireframe = wire; });
+});
+
+let iso=null;
+function setIso(id){
+  iso = (iso===id) ? null : id;
+  PARTS.forEach(p=>{
+    const on = !iso || p.id===iso;
+    p.mats.forEach((m,i)=>{
+      m.transparent = on ? p.tr0[i] : true;
+      m.opacity     = on ? p.op0[i] : .06;
+      m.depthWrite  = on;
+    });
+    /* a ghosted part must stop casting too, or the isolated one sits in the
+       shadow of parts you can no longer see */
+    p.group.traverse(o=>{ if(o.isMesh) o.castShadow = on; });
+    p.edges.material.opacity = on ? .34 : .05;
+  });
+  document.querySelectorAll('#partList .p').forEach(b=>
+    b.setAttribute('aria-pressed', String(b.dataset.id===iso)));
+}
+
+document.getElementById('views').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(b) goView(b.dataset.v);
+});
+document.getElementById('tWire').onclick=()=>setWire(!wire);
+document.getElementById('tEdge').onclick=()=>setEdges(!edges);
+document.getElementById('tSpin').onclick=e=>{
+  spin=!spin; e.currentTarget.setAttribute('aria-pressed',String(spin));
+};
+let dims=false;
+document.getElementById('tDim').onclick=e=>{
+  dims=!dims; e.currentTarget.setAttribute('aria-pressed',String(dims));
+  ['dimW','dimH','dimD'].forEach(id=>document.getElementById(id).classList.toggle('on',dims));
+};
+addEventListener('keydown',e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const k=e.key.toLowerCase(), vs=['iso','front','back','side','top'];
+  if(k>='1'&&k<='5') goView(vs[+k-1]);
+  else if(k==='w') setWire(!wire);
+  else if(k==='g') setEdges(!edges);
+  else if(k==='e') setExplode(explodeT>0 ? 0 : 100);
+});
+
+/* dimension tags */
+document.getElementById('dimW').textContent = mm(size.x)+' mm';
+document.getElementById('dimH').textContent = mm(size.y)+' mm';
+document.getElementById('dimD').textContent = mm(size.z)+' mm';
+const dimPts={
+  dimW:new THREE.Vector3(0,-size.y/2-size.y*.20,0),
+  dimH:new THREE.Vector3(-size.x/2-size.x*.10,0,0),
+  dimD:new THREE.Vector3(size.x/2+size.x*.06,-size.y/2-size.y*.10,0),
+};
+const _v=new THREE.Vector3();
+function placeDims(){
+  if(!dims) return;
+  for(const id in dimPts){
+    _v.copy(dimPts[id]).project(camera);
+    const e=document.getElementById(id);
+    e.style.left=((_v.x*.5+.5)*innerWidth)+'px';
+    e.style.top =((-_v.y*.5+.5)*innerHeight)+'px';
+    e.style.opacity=(_v.z<1)?'1':'0';
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   LOOP
+   ════════════════════════════════════════════════════════ */
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  /* keep the framing honest when the aspect changes */
+  const prev=FIT;
+  FIT=fitFor(-.62, 1.16, boxAt(0));
+  R_MIN=FIT*0.28; R_MAX=FIT*4.0;
+  const s=FIT/prev; cam.r*=s; tgt.r=Math.max(R_MIN,Math.min(R_MAX,tgt.r*s));
+});
+
+const clock=new THREE.Clock();
+(function frame(){
+  requestAnimationFrame(frame);
+  const dt=Math.min(.05, clock.getDelta());
+
+  idle+=dt;
+  if(spin && !dragging && idle>2.2) tgt.th -= dt*.19;
+
+  const k=1-Math.pow(.0016,dt);
+  cam.th+=(tgt.th-cam.th)*k; cam.ph+=(tgt.ph-cam.ph)*k; cam.r+=(tgt.r-cam.r)*k;
+  explodeV+=(explodeT-explodeV)*k;
+
+  PARTS.forEach(p=>{ p.group.position.z = p.spread*explodeV; });
+  syncClones();
+
+  /* tgt.r is already refit on every explode/view change, so cam.r is the
+     whole story here */
+  const rr = cam.r;
+  const sp = Math.sin(cam.ph);
+  camera.position.set(rr*sp*Math.sin(cam.th), rr*Math.cos(cam.ph), rr*sp*Math.cos(cam.th));
+  camera.lookAt(0,0,0);
+
+  placeDims();
+  renderer.render(scene,camera);
+})();
+
+setTimeout(()=>document.getElementById('load').classList.add('gone'), 200);
+
+/* handle for scripting / inspecting the viewer from the console */
+window.viewer = { scene, camera, renderer, PARTS, size, ordered, VIEWS,
+                  get FIT(){return FIT}, fitFor, boxAt,
+                  setExplode, goView, setIso, setWire, setEdges };
+
+} /* boot */
+</script>
+</body>
+</html>

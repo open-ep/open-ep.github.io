@@ -12,3 +12,13 @@
 *.woff  binary
 *.woff2 binary
 *.pdf  binary
+
+# Binary STL. Without this these fall under "* text=auto" and survive only
+# because Git's heuristic happens to find a NUL byte in the header — don't
+# leave 3D geometry riding on a guess.
+*.stl  binary
+
+# Gerber and Excellon drill are ASCII, so LF is correct for them.
+*.gbr    text eol=lf
+*.drl    text eol=lf
+*.gbrjob text eol=lf
