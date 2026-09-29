@@ -157,12 +157,13 @@
                     <div class="bg-[#e5e7eb] p-3 rounded-xl shadow-inner">
                         <!-- Screen Content Area (Adjusted to aspect-[9/16] to match 480x854) -->
                         <div class="aspect-[9/16] bg-[#f0f0f0] overflow-hidden relative shadow-inner border border-gray-300 rounded-lg">
-                             <!-- Rick Roll GIF with E-ink Filter, Opacity 100% -->
-                             <img 
-                                src="imgs/rickroll.gif" 
-                                alt="Open-EP E-Paper Demo" 
+                             <!-- Demo loop with E-ink filter (MP4 instead of GIF: 11MB -> 400KB) -->
+                             <video
+                                src="imgs/rickroll.mp4"
+                                autoplay muted loop playsinline
+                                aria-label="Open-EP E-Paper Demo"
                                 class="w-full h-full object-cover filter grayscale contrast-125 brightness-110 mix-blend-multiply opacity-100"
-                             />
+                             ></video>
                              <!-- Screen Glare Effect -->
                              <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none"></div>
                         </div>
@@ -226,7 +227,7 @@
               <!-- ROBOEYE-100-M -->
               <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                  <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/roboeye-100-m.webp" alt="ROBOEYE-100-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/roboeye-100-m.webp" alt="ROBOEYE-100-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
                  </div>
                  <div class="flex justify-between items-start mb-4">
                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -270,7 +271,7 @@
               <!-- PIXPAPER-213-C -->
               <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                  <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/pixpaper-213-c.jpg" alt="PIXPAPER-213-C Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/pixpaper-213-c.jpg" alt="PIXPAPER-213-C Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
                  </div>
                  <div class="flex justify-between items-start mb-4">
                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -297,7 +298,7 @@
               <!-- PIXPAPER-213-M -->
               <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                 <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/pixpaper-213-m.png" alt="PIXPAPER-213-M Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/pixpaper-213-m.jpg" alt="PIXPAPER-213-M Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="flex justify-between items-start mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -324,7 +325,7 @@
              <!-- PIXPAPER-426-M -->
              <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                 <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/pixpaper-426-m.png" alt="PIXPAPER-426-M Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/pixpaper-426-m.jpg" alt="PIXPAPER-426-M Module" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="flex justify-between items-start mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -368,7 +369,7 @@
               <!-- AIRPAPER-260-M -->
               <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                 <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/airpaper-260-m.jpg" alt="AIRPAPER-260-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/airpaper-260-m.jpg" alt="AIRPAPER-260-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="flex justify-between items-start mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -412,7 +413,7 @@
               <!-- SIGNPAPER-1330-M -->
               <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl hover:border-gray-600 transition-all hover:-translate-y-1 group flex flex-col">
                 <div class="relative w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-5 border border-gray-700">
-                    <img src="imgs/signpaper-1330-m.png" alt="SIGNPAPER-1330-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" src="imgs/signpaper-1330-m.jpg" alt="SIGNPAPER-1330-M Module" class="w-full h-full object-contain p-2 opacity-90 group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="flex justify-between items-start mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 group-hover:text-white transition-colors"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -460,7 +461,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
-                <img src="imgs/vendors/raspberry-pi.svg" alt="Raspberry Pi logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/raspberry-pi.svg" alt="Raspberry Pi logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">Raspberry Pi</h3>
@@ -480,7 +481,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
-                <img src="imgs/vendors/nxp.svg" alt="NXP logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/nxp.svg" alt="NXP logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">NXP Platforms</h3>
@@ -499,7 +500,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
-                <img src="imgs/vendors/renesas.svg" alt="Renesas logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/renesas.svg" alt="Renesas logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">Renesas Platforms</h3>
@@ -516,7 +517,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
-                <img src="imgs/vendors/telechips.jpg" alt="Telechips logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/telechips.jpg" alt="Telechips logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">Telechips Platforms</h3>
@@ -532,7 +533,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-24 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-1.5 overflow-hidden">
-                <img src="imgs/vendors/rockchip.jpg" alt="Rockchip logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/rockchip.jpg" alt="Rockchip logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">Rockchip Platform</h3>
@@ -548,7 +549,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
-                <img src="imgs/vendors/riscv.png" alt="RISC-V logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/riscv.png" alt="RISC-V logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">RISC-V Platform</h3>
@@ -564,7 +565,7 @@
           <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-ink-black/20 transition-all duration-300 flex flex-col">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 p-3 overflow-hidden">
-                <img src="imgs/vendors/stmicroelectronics.svg" alt="STMicroelectronics logo" class="max-w-full max-h-full object-contain">
+                <img loading="lazy" src="imgs/vendors/stmicroelectronics.svg" alt="STMicroelectronics logo" class="max-w-full max-h-full object-contain">
               </div>
               <div class="flex-1 min-w-0 pt-0.5">
                 <h3 class="text-lg font-bold text-ink-black leading-tight">STMicroelectronics</h3>
@@ -606,7 +607,7 @@
                 <!-- Member 1 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/grace.png" alt="Grace To" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/grace.jpg" alt="Grace To" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Grace To</h3>
@@ -617,7 +618,7 @@
                 <!-- Member 3 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/ted.jpg" alt="Ted Lin" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/ted.jpg" alt="Ted Lin" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Ted Lin</h3>
@@ -628,7 +629,7 @@
                 <!-- Member 3 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/cr.jpg" alt="ChengRuei Tsai" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/cr.jpg" alt="ChengRuei Tsai" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">ChengRuei Tsai</h3>
@@ -646,7 +647,7 @@
                 <!-- Member 4 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/summer.jpg" alt="Summer Lin" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/summer.jpg" alt="Summer Lin" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Summer Lin</h3>
@@ -658,7 +659,7 @@
                 <!-- Member 5 (formerly 4) -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/lc.jpg" alt="LiangCheng Wang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/lc.jpg" alt="LiangCheng Wang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">LiangCheng Wang</h3>
@@ -670,7 +671,7 @@
                 <!-- Member 5 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/jason.jpg" alt="Jason Yang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/jason.jpg" alt="Jason Yang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Jason Yang</h3>
@@ -681,7 +682,7 @@
                 <!-- Member 6 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/cm.png" alt="CM Wang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/cm.jpg" alt="CM Wang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">CM Wang</h3>
@@ -692,7 +693,7 @@
                 <!-- Member 7 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/wig.jpg" alt="Wig Cheng" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/wig.jpg" alt="Wig Cheng" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Wig Cheng</h3>
@@ -703,7 +704,7 @@
                 <!-- Member 8 -->
                 <div class="group">
                 <div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-6 border-2 border-transparent group-hover:border-ink-black transition-colors duration-300">
-                    <img src="imgs/sean.jpg" alt="Sean Chang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
+                    <img loading="lazy" src="imgs/sean.jpg" alt="Sean Chang" class="w-full h-full object-cover transition-all duration-700 ease-out transform group-hover:scale-105" />
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-ink-black">Sean Chang</h3>
@@ -834,10 +835,10 @@
               </div>
               <div class="flex-shrink-0 flex gap-2 mt-3 md:mt-0 self-start md:self-center">
                 <a href="imgs/events/coscup-2026-1-1.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/coscup-2026-1-1.jpg" alt="UBUCON Asia x COSCUP 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/coscup-2026-1-1.jpg" alt="UBUCON Asia x COSCUP 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
                 <a href="imgs/events/coscup-2026-1-2.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/coscup-2026-1-2.jpg" alt="UBUCON Asia x COSCUP 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/coscup-2026-1-2.jpg" alt="UBUCON Asia x COSCUP 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
               </div>
             </li>
@@ -866,10 +867,10 @@
               </div>
               <div class="flex-shrink-0 flex gap-2 mt-3 md:mt-0 self-start md:self-center">
                 <a href="imgs/events/uiap-meetup-2026-1-1.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/uiap-meetup-2026-1-1.jpg" alt="UIAPDUINO MEETUP 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/uiap-meetup-2026-1-1.jpg" alt="UIAPDUINO MEETUP 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
                 <a href="imgs/events/uiap-meetup-2026-1-2.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/uiap-meetup-2026-1-2.jpg" alt="UIAPDUINO MEETUP 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/uiap-meetup-2026-1-2.jpg" alt="UIAPDUINO MEETUP 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
               </div>
             </li>
@@ -898,10 +899,10 @@
               </div>
               <div class="flex-shrink-0 flex gap-2 mt-3 md:mt-0 self-start md:self-center">
                 <a href="imgs/events/osc-nagoya-1.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/osc-nagoya-1.jpg" alt="OSC-Nagoya 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/osc-nagoya-1.jpg" alt="OSC-Nagoya 2026 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
                 <a href="imgs/events/osc-nagoya-2.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/osc-nagoya-2.jpg" alt="OSC-Nagoya 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/osc-nagoya-2.jpg" alt="OSC-Nagoya 2026 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
               </div>
             </li>
@@ -926,10 +927,10 @@
               </div>
               <div class="flex-shrink-0 flex gap-2 mt-3 md:mt-0 self-start md:self-center">
                 <a href="imgs/events/maker-faire-2025-1.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/maker-faire-2025-1.jpg" alt="Maker Faire Taipei 2025 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                  <img loading="lazy" src="imgs/events/maker-faire-2025-1.jpg" alt="Maker Faire Taipei 2025 photo 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
-                <a href="imgs/events/maker-faire-2025-2.png" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
-                  <img src="imgs/events/maker-faire-2025-2.png" alt="Maker Faire Taipei 2025 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                <a href="imgs/events/maker-faire-2025-2.jpg" target="_blank" class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 hover:border-orange-400/50 transition-colors block">
+                  <img loading="lazy" src="imgs/events/maker-faire-2025-2.jpg" alt="Maker Faire Taipei 2025 photo 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </a>
               </div>
             </li>
